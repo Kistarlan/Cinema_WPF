@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Core.Mapping;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -30,20 +31,15 @@ namespace Cinema_WPF.Models
             Tickets = new List<Ticket>();
         }
 
+        
+        private string password { get; set; }
 
-        private string password
-        {
-            get;
-            set;
-        }
-
-
-        [NotMapped]
         public string Password
         {
-            get { return Cryptograph.Decrypt(password); }
             set { password = Cryptograph.Encrypt(value); }
+            get { return password; }
         }
+             /*{ return Cryptograph.Decrypt(password); }*/
 
 
         

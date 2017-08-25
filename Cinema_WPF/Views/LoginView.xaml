@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="Cinema_WPF.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cinema_WPF.Views"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:viewModel="clr-namespace:Cinema_WPF.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance viewModel:LoginView}"
+             >
+    <Grid Background="#41b1e1">
+        <StackPanel HorizontalAlignment="Center" Margin="0,50">
+            <TextBlock Text="Login" FontSize="14" FontWeight="Bold" Foreground="White" Margin="05"></TextBlock>
+            <TextBox  controls:TextBoxHelper.ClearTextButton="True" controls:TextBoxHelper.Watermark="Enter Your Login" TextWrapping="Wrap"  VerticalAlignment="Top" />
+            <TextBlock Text="Please enter a valid email address" Foreground="Red" Visibility="Hidden"></TextBlock>
+            <TextBlock Text="Password" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,20,0,0"></TextBlock>
+            <PasswordBox controls:TextBoxHelper.Watermark="Password" controls:TextBoxHelper.ClearTextButton="True" ></PasswordBox>
+            <TextBlock Text="Incorrect password" Foreground="Red" Visibility="Hidden"></TextBlock>
+            <Button Margin="0,10" Content="Sign in" Foreground="White" BorderThickness="0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#7bceee"></Setter>
+                        <Setter Property="Height" Value="25"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Background" Value="#87dcef" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -21,21 +21,21 @@ namespace Cinema_WPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private CinemaContext dbContext;
         public MainWindow()
         {
             dbContext = new CinemaContext();
-            UserRole AdminRole = new UserRole() { Name = "Admin" };
-                UserRole CashierRole = new UserRole() { Name = "Cashier" };
-                dbContext.UserRoles.Add(AdminRole);
-                dbContext.UserRoles.Add(CashierRole);
-                //dbContext.UserRoles.AddRange(new List<UserRole>() { AdminRole, CashierRole });
-                dbContext.SaveChanges();
-                User AdminUser = new User() { Login = "Admin", Name = "Admin", Surname = "Admin", Password = "Admin", UserRole = AdminRole, UserRoleId = AdminRole.Id };
-                dbContext.Users.Add(AdminUser);
-                dbContext.SaveChanges();
+            //UserRole AdminRole = new UserRole() { Name = "Admin" };
+            //UserRole CashierRole = new UserRole() { Name = "Cashier" };
+            //dbContext.UserRoles.Add(AdminRole);
+            //dbContext.UserRoles.Add(CashierRole);
+            //    dbContext.SaveChanges();
+            //User AdminUser = new User() { Login = "Admin", Name = "Admin", Surname = "Admin", Password = "Admin", UserRole = dbContext.UserRoles.First(), UserRoleId = 0, DateOfBirth = Convert.ToDateTime(new DateTime(1997, 3, 12)).Date };
+            //dbContext.Users.Add(AdminUser);
+            ////dbContext.Users.Remove(dbContext.Users.First());
+            //dbContext.SaveChanges();
             InitializeComponent();
         }
     }

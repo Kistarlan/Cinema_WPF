@@ -10,7 +10,10 @@ namespace Cinema_WPF.Context
 {
     class CinemaContext : DbContext
     {
-        public CinemaContext() : base("DefaultConnection") { }
+        public CinemaContext() : base("DefaultConnection")
+        {
+  
+        }
 
         public DbSet<Film> Films { get; set; }
         public DbSet<Session> Sessions { get; set; }
