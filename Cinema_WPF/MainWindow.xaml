@@ -8,13 +8,22 @@
         xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:views="clr-namespace:Cinema_WPF.Views"
+        xmlns:viewModel="clr-namespace:Cinema_WPF.ViewModels"
+                      
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        
-        Title="Login" Height="350" Width="300">
+        MinHeight="300"
+        MinWidth="300"
+        Width="300"
+        Height="auto"
+        Title="Cinema">
+    <Window.DataContext>
+        <viewModel:MainWindowViewModel></viewModel:MainWindowViewModel>
+    </Window.DataContext>
     <Grid Background="#41b1e1">
-        <views:LoginView></views:LoginView>
+        <views:MainView x:Name="MainView" Visibility="{Binding MainViewVisibility}"></views:MainView>
+        <views:LoginView x:Name="LoginView" Visibility="{Binding LoginViewVisibility}"></views:LoginView>
     </Grid>
 </controls:MetroWindow>
 
