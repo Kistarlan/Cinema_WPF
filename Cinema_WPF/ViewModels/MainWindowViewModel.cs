@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Cinema_WPF.Models;
 
 namespace Cinema_WPF.ViewModels
 {
@@ -12,28 +13,32 @@ namespace Cinema_WPF.ViewModels
     {
         //public double Width{ get; set; }
         //public double Height{ get; set; }
+        public MainWindow CurentWindow;
         public Visibility LoginViewVisibility { get; private set; }
         
         public Visibility MainViewVisibility { get; private set; }
-        public MainWindowViewModel()
+        public MainWindowViewModel(MainWindow curentWindow)
         {
+            CurentWindow = curentWindow;
             LoginViewVisibility = Visibility.Visible;
             MainViewVisibility = Visibility.Hidden;
             VisibilityPropertyChanged();
         }
 
-        public void Login()
+        public void Login(User user)
         {
-            LoginViewVisibility = Visibility.Hidden;
-            MainViewVisibility = Visibility.Visible;
-            VisibilityPropertyChanged();
+            CurentWindow.ShowMainView(user);
+            //LoginViewVisibility = Visibility.Hidden;
+            //MainViewVisibility = Visibility.Visible;
+            //VisibilityPropertyChanged();
         }
 
         public void Logout()
         {
-            LoginViewVisibility = Visibility.Visible;
-            MainViewVisibility = Visibility.Hidden;
-            VisibilityPropertyChanged();
+            CurentWindow.ShowLoginView();
+            //LoginViewVisibility = Visibility.Visible;
+            //MainViewVisibility = Visibility.Hidden;
+            //VisibilityPropertyChanged();
         }
 
         private void VisibilityPropertyChanged()

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace Cinema_WPF.Models
 {
-    class Ticket
+    public class Ticket : ObservableObject
     {
         public int Id { get; set; }
         public int Row { get; set; }

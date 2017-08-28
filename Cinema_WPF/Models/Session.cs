@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace Cinema_WPF.Models
 {
-    class Session
+    public class Session : ObservableObject
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }

@@ -8,10 +8,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Cinema_WPF.Helper;
+using GalaSoft.MvvmLight;
 
 namespace Cinema_WPF.Models
 {
-    class User
+    public class User : ObservableObject
     {
         public int Id { get; set; }
         public string Name { get; set; }

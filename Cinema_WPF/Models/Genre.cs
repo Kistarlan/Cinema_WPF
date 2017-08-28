@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace Cinema_WPF.Models
 {
-    class Genre
+    public class Genre : ObservableObject
     {
         public int Id { get; set; }
         public string Name { get; set; }

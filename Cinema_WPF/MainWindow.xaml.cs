@@ -29,9 +29,10 @@ namespace Cinema_WPF
         MainViewViewModel MainViewViewModel;
         public MainWindow()
         {
+            dbContext = new CinemaContext();
 
+            dbContext.SaveChanges();
             //var loginviewmodel = LoginView.DataContext;
-            //dbContext = new CinemaContext();
             //UserRole AdminRole = new UserRole() { Name = "Admin" };
             //UserRole CashierRole = new UserRole() { Name = "Cashier" };
             //dbContext.UserRoles.Add(AdminRole);
@@ -40,7 +41,6 @@ namespace Cinema_WPF
             //User AdminUser = new User() { Login = "Admin", Name = "Admin", Surname = "Admin", Password = "Admin", UserRole = dbContext.UserRoles.First(), UserRoleId = 0, DateOfBirth = Convert.ToDateTime(new DateTime(1997, 3, 12)).Date };
             //dbContext.Users.Add(AdminUser);
             //////dbContext.Users.Remove(dbContext.Users.First());
-            //dbContext.SaveChanges();
             //ShowLoginView();
             //Binding loginviewBinding = new Binding();
             //loginviewBinding.Source = loginviewmodel;
@@ -49,24 +49,44 @@ namespace Cinema_WPF
             //loginviewBinding.Path = new PropertyPath("LoginViewVisibility");
 
             //this.LoginView.SetBinding(VisibilityProperty, loginviewBinding);
-
+            this.DataContext = new MainWindowViewModel(this);
             InitializeComponent();
+            this.Width = 300;
+            this.Height = 400;
             loginviewmodel = LoginView.DataContext as LoginViewModel;
-            loginviewmodel.ParentMainWindowViewModel = this.DataContext as MainWindowViewModel;
+            if (loginviewmodel != null)
+                loginviewmodel.ParentMainWindowViewModel = this.DataContext as MainWindowViewModel;
             MainViewViewModel = MainView.DataContext as MainViewViewModel;
-            MainViewViewModel.ParentMainWindowViewModel = this.DataContext as MainWindowViewModel;
+            if (MainViewViewModel != null)
+                MainViewViewModel.ParentMainWindowViewModel = this.DataContext as MainWindowViewModel;
+
+            ShowMainView(dbContext.Users.FirstOrDefault(i => i.Login.ToLower() == "Admin"));
         }
 
-        internal void ShowMainView(User user)
+        public void ShowMainView(User user)
         {
+            MainViewViewModel.User = user;
+            MainViewViewModel.Show();
             MainView.Visibility = Visibility.Visible;
             LoginView.Visibility = Visibility.Hidden;
+            this.MinWidth = 500;
+            this.Width = 600;
+            this.Height = 600;
+            this.ResizeMode = ResizeMode.CanResize;
+            this.WindowState = WindowState.Maximized;
         }
 
-        internal void ShowLoginView()
+        public void ShowLoginView()
         {
+            
             MainView.Visibility = Visibility.Hidden;
             LoginView.Visibility = Visibility.Visible;
+            this.WindowState = WindowState.Normal;
+            this.ResizeMode = ResizeMode.NoResize;
+            this.MinWidth = 300;
+            this.MinHeight = 300;
+            this.Width = 300;
+            this.Height = 400;
         }
     }
 }

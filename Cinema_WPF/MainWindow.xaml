@@ -15,12 +15,10 @@
         ResizeMode="NoResize"
         MinHeight="300"
         MinWidth="300"
-        Width="300"
-        Height="auto"
         Title="Cinema">
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <viewModel:MainWindowViewModel></viewModel:MainWindowViewModel>
-    </Window.DataContext>
+    </Window.DataContext>-->
     <Grid Background="#41b1e1">
         <views:MainView x:Name="MainView" Visibility="{Binding MainViewVisibility}"></views:MainView>
         <views:LoginView x:Name="LoginView" Visibility="{Binding LoginViewVisibility}"></views:LoginView>

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Cinema_WPF.Models;
+using Cinema_WPF.ViewModels;
 
 namespace Cinema_WPF.Views
 {
@@ -23,6 +25,15 @@ namespace Cinema_WPF.Views
         public MainView()
         {
             InitializeComponent();
+        }
+
+        private void ListViewItem_MouseClick(object sender, MouseButtonEventArgs e)
+        {
+            Film film = (sender as ListViewItem).Content as Film;
+            if (film != null)
+            {
+                (this.DataContext as MainViewViewModel).ShowFilm(film);
+            }
         }
     }
 }

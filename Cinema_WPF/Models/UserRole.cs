@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace Cinema_WPF.Models
 {
-    class UserRole
+    public class UserRole : ObservableObject
     {
         
         public int Id { set; get; }

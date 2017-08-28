@@ -5,12 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cinema_WPF.Views"
              xmlns:viewModel="clr-namespace:Cinema_WPF.ViewModels"
+             xmlns:converters="clr-namespace:Cinema_WPF.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             FontFamily="Georgia"
+             d:DesignHeight="300" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewModel:MainViewViewModel></viewModel:MainViewViewModel>
     </UserControl.DataContext>
-    <Grid Background="#41b1e1">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/ButtonStyle.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:WidthConverter x:Key="WidthConverter"></converters:WidthConverter>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="#41b1e1" >
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -21,6 +33,214 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Command="{Binding LogoutCommand}"></Button>
+        <Button Command="{Binding LogoutCommand}" Grid.Column="0" Grid.Row="0">
+            <TextBlock Text="Films" Foreground="White" FontFamily="Georgia" FontWeight="Bold" FontSize="28">
+                
+            </TextBlock>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#41b1e1"></Setter>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="Button.IsMouseOver"  Value="True">
+                            <Setter Property="Background" Value="#7bceee" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Command="{Binding LogoutCommand}" Grid.Column="0" Grid.Row="1">
+            <TextBlock Text="Sessions" Foreground="White" FontFamily="Georgia" FontWeight="Bold" FontSize="28">
+
+            </TextBlock>
+            
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#41b1e1"></Setter>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="Button.IsMouseOver"  Value="True">
+                            <Setter Property="Background" Value="#7bceee" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Line Grid.Column="0"  Grid.Row="1" Panel.ZIndex="2" Grid.ColumnSpan="2" Stroke="White" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Y2="0" StrokeThickness="2"></Line>
+        <Line Grid.Column="0" Grid.Row="2" Panel.ZIndex="2" Stroke="White" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Y2="0" StrokeThickness="2"></Line>
+        <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Width="70" Orientation="Vertical">
+            <TextBlock Text="{Binding User.Name}" FontFamily="Georgia" FontWeight="Bold" FontSize="14"  HorizontalAlignment="Center"  Foreground="White"></TextBlock>
+            <Button Command="{Binding LogoutCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#41b1e1"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Background" Value="#41b1e1" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock Text="Log out"  HorizontalAlignment="Center"  Foreground="White" FontFamily="Georgia" FontWeight="Bold" FontSize="14">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Button.IsMouseOver"  Value="True">
+                                    <Setter Property="TextDecorations" Value="UnderLine" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+            </Button>
+        </StackPanel>
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding FilmsVisibility}">
+            <ListView x:Name="FilmsList" Background="#b4e4ff" Margin="10, 10, 10, 50" BorderThickness="0" 
+                      ItemsSource="{Binding FilmsCollection}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                      VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="1" HorizontalAlignment="Left"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_MouseClick" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
+                            <StackPanel>
+                                <TextBlock Foreground="White" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                    <TextBlock Text="Year: " FontWeight="Bold" Foreground="White" FontSize="16"></TextBlock>
+                                    <TextBlock Foreground="White" Text="{Binding Year}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}">
+                                    <TextBlock Text="Description: " FontWeight="Bold" Foreground="White"  HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                    <TextBlock Text="{Binding Desription}" Foreground="White"  HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="16"  Padding="0,0,40,0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Width">
+                                                    <Setter.Value>
+                                                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ListView}}" Path="ActualWidth">
+                                                            <Binding.Converter>
+                                                                <converters:WidthConverter />
+                                                            </Binding.Converter>
+                                                            <Binding.ConverterParameter>
+                                                                100
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                                <!--<Line Stroke="White" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Y2="0" StrokeThickness="2"></Line>-->
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel Margin="0,0,0,5" VerticalAlignment="Bottom" Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="First" Command="{Binding FirstFilmPageCommand}"></Button>
+                <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0"  Content="Prev" Command="{Binding PreviusFilmPageCommand}"/>
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock Foreground="White" Margin="4,0" Text="{Binding CurrentFilmsPosition}"></TextBlock>
+                    <TextBlock Foreground="White" Margin="4,0" Text="of"></TextBlock>
+                    <TextBlock Foreground="White" Margin="4,0" Text="{Binding FilmPageCount}"></TextBlock>
+                </StackPanel>
+                <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Command="{Binding NextFilmPageCommand}">Next</Button>
+                <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="Last" Command="{Binding LastFilmPageCommand}"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding FilmVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Command="{Binding ShowFilmsCommand}" Grid.Row="0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#41b1e1"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                        <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                        <Setter Property="VerticalAlignment" Value="Top"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Background" Value="#41b1e1" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock Text="Back to films"  HorizontalAlignment="Center"  Foreground="White" FontFamily="Georgia" FontWeight="Bold" FontSize="14">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Button.IsMouseOver"  Value="True">
+                                    <Setter Property="TextDecorations" Value="UnderLine" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Button>
+            <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5, 20, 5, 20" >
+                <TextBlock Foreground="White" Text="{Binding SelectedFilm.Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                        <TextBlock Text="Year: " FontWeight="Bold" Foreground="White" FontSize="16"></TextBlock>
+                        <TextBlock Foreground="White" Text="{Binding SelectedFilm.Year}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                    </StackPanel>
+                <StackPanel Orientation="Horizontal" >
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Width">
+                                <Setter.Value>
+                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}" Path="ActualWidth">
+                                        <Binding.Converter>
+                                            <converters:WidthConverter />
+                                        </Binding.Converter>
+                                        <Binding.ConverterParameter>
+                                            0
+                                        </Binding.ConverterParameter>
+                                    </Binding>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </StackPanel.Style>    
+                    <TextBlock Text="Description: " FontWeight="Bold" Foreground="White"  HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                        <TextBlock Text="{Binding SelectedFilm.Desription}" Foreground="White"  HorizontalAlignment="Stretch"  TextWrapping="Wrap" FontSize="16"  Padding="0,0,40,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Width">
+                                        <Setter.Value>
+                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Grid}}" Path="ActualWidth">
+                                                <Binding.Converter>
+                                                    <converters:WidthConverter />
+                                                </Binding.Converter>
+                                                <Binding.ConverterParameter>
+                                                    0
+                                                </Binding.ConverterParameter>
+                                            </Binding>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+            </StackPanel>
+
+
+        </Grid>
+        
     </Grid>
+       
 </UserControl>

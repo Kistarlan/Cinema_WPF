@@ -81,6 +81,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\WidthConverter.cs" />
+    <Compile Include="Helper\GetList.cs" />
+    <Compile Include="Migrations\201708280711540_All public.cs" />
+    <Compile Include="Migrations\201708280711540_All public.Designer.cs">
+      <DependentUpon>201708280711540_All public.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708280832492_All ObservableObject.cs" />
+    <Compile Include="Migrations\201708280832492_All ObservableObject.Designer.cs">
+      <DependentUpon>201708280832492_All ObservableObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -106,6 +116,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\ButtonStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -165,6 +179,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708251403281_ChangePassword_1Migration.resx">
       <DependentUpon>201708251403281_ChangePassword_1Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708280711540_All public.resx">
+      <DependentUpon>201708280711540_All public.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708280832492_All ObservableObject.resx">
+      <DependentUpon>201708280832492_All ObservableObject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

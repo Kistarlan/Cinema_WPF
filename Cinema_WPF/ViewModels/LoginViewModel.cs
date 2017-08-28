@@ -31,9 +31,6 @@ namespace Cinema_WPF.ViewModels
         public string Day { get; set; }
 
 
-        public Visibility LoginViewVisibility { get; set; }
-
-
         public Visibility IncorrectLoginVisibility { get; set; }
         public Visibility IncorrectRegistrationLoginVisibility { get; set; }
         public Visibility IncorrectRegistrationPasswordVisibility { get; set; }
@@ -51,7 +48,7 @@ namespace Cinema_WPF.ViewModels
 
         public LoginViewModel()
         {
-            LoginViewVisibility = Visibility.Visible;
+         
             IncorrectRegistrationLoginVisibility = Visibility.Hidden;
             IncorrectRegistrationPasswordVisibility = Visibility.Hidden;
             RegistrationVisibility = Visibility.Hidden;
@@ -78,12 +75,42 @@ namespace Cinema_WPF.ViewModels
             }
             else
             {
-                IncorrectPasswordVisibility = Visibility.Hidden;
-                PropertyChangedVisibility();
-                LoginViewVisibility = Visibility.Hidden;
-                ParentMainWindowViewModel.Login();
-                //ParentWindow.ShowMainView(user);
+                pb.Password = null;
+                CleanAll();
+                ParentMainWindowViewModel.Login(user);
             }
+        }
+
+        private void CleanAll()
+        {
+            UserName = null;
+            Password = null;
+            Name = null;
+            Surname = null;
+            Year = null;
+            Mounth = null;
+            Day = null;
+
+            IncorrectPasswordVisibility = Visibility.Hidden;
+            IncorrectLoginVisibility = Visibility.Hidden;
+            LoginVisibility = Visibility.Visible;
+            RegistrationVisibility = Visibility.Hidden;
+            IncorrectRegistrationLoginVisibility = Visibility.Hidden;
+            IncorrectRegistrationPasswordVisibility = Visibility.Hidden;
+            PropertyChangedVisibility();
+            PropertyChangedText();
+        }
+
+
+        private void PropertyChangedText()
+        {
+            RaisePropertyChanged("UserName");
+            RaisePropertyChanged("Password");
+            RaisePropertyChanged("Name");
+            RaisePropertyChanged("Surname");
+            RaisePropertyChanged("Year");
+            RaisePropertyChanged("Mounth");
+            RaisePropertyChanged("Day");
         }
 
         private void RegistrationMethod(PasswordBox pb)
@@ -140,13 +167,15 @@ namespace Cinema_WPF.ViewModels
             user.UserRole = dbContext.UserRoles.Find(2);
             dbContext.Users.Add(user);
             dbContext.SaveChanges();
+            CleanAll();
+            ParentMainWindowViewModel.Login(user);
         }
 
         private void RegistrationFormVisibilityMethod( Window currentWindow)
         {
             if (ParentWindow == null)
                 ParentWindow = currentWindow;
-            ParentWindow.Height += 50;
+            ParentWindow.Height += 150;
             IncorrectPasswordVisibility = Visibility.Hidden;
             IncorrectLoginVisibility = Visibility.Hidden;
             LoginVisibility = Visibility.Hidden;
@@ -155,7 +184,7 @@ namespace Cinema_WPF.ViewModels
         }
         private void LoginFormVisibilityMethod()
         {
-            ParentWindow.Height -= 50;
+            ParentWindow.Height -= 150;
             IncorrectRegistrationLoginVisibility = Visibility.Hidden;
             IncorrectRegistrationPasswordVisibility = Visibility.Hidden;
             CalendarErrorVisibility = Visibility.Hidden;
@@ -174,6 +203,7 @@ namespace Cinema_WPF.ViewModels
             RaisePropertyChanged("IncorrectRegistrationLoginVisibility");
             RaisePropertyChanged("IncorrectRegistrationPasswordVisibility");
         }
+
 
 
     }

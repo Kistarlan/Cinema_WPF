@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace Cinema_WPF.Models
 {
-    class Hall
+    public class Hall : ObservableObject
     {
         public int Id { get; set; }
         public int Number { get; set; }
