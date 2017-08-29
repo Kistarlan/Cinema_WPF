@@ -34,15 +34,51 @@ namespace Cinema_WPF.Helper
             }
         }
 
+        public static ObservableCollection<Session> GetFilm_Sessions(List<Session> sessions, int start, int size)
+        {
+
+            ObservableCollection<Session> rezult = new ObservableCollection<Session>();
+            List<Session> Sessions = sessions;
+            int count = Sessions.Count();
+            Session.Sort(Sessions);
+            if (size < count - start)
+            {
+                for (int i = start; i < start + size; i++)
+                {
+                    rezult.Add(Sessions[i]);
+                }
+                return rezult;
+            }
+            else
+            {
+                for (int i = start; i < count; i++)
+                {
+                    rezult.Add(Sessions[i]);
+                }
+                return rezult;
+            }
+        }
+
         public static int GetFilmPages(DbSet<Film> films, int size)
         {
             int remainder = films.Count() % size;
-
+            if (films.Count() / size == 0)
+                return 1;
             if(remainder == 0)
                 return films.Count()/size;
             else
                 return films.Count()/size + 1;
         }
 
+        public static int GetSessionPages(List<Session> sessions, int size)
+        {
+            int remainder = sessions.Count() % size;
+            if (sessions.Count / size == 0)
+                return 1;
+            if (remainder == 0)
+                return sessions.Count() / size;
+            else
+                return sessions.Count() / size + 1;
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace Cinema_WPF.Models
         public int Id { get; set; }
         public int Row { get; set; }
         public int Column { get; set; }
+        public bool Exist { get; set; }
 
         public int? SessionId { get; set; }
         public virtual Session Session { get; set; }

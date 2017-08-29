@@ -30,8 +30,19 @@ namespace Cinema_WPF
         public MainWindow()
         {
             dbContext = new CinemaContext();
-
+            //List<Session> list = dbContext.Sessions.ToList();
+            //for (int i = 0; i < list.Count(); i++)
+            //{
+            //    //dbContext.Tickets.RemoveRange(list[i].Tickets);
+            //    list[i].GenerateTickets(dbContext);
+            //}
             dbContext.SaveChanges();
+            //dbContext.Sessions.RemoveRange(dbContext.Sessions);
+            //dbContext.s
+            //foreach (var session in dbContext.Sessions)
+            //{
+            //    session.GenerateTickets();
+            //}
             //var loginviewmodel = LoginView.DataContext;
             //UserRole AdminRole = new UserRole() { Name = "Admin" };
             //UserRole CashierRole = new UserRole() { Name = "Cashier" };
@@ -49,6 +60,48 @@ namespace Cinema_WPF
             //loginviewBinding.Path = new PropertyPath("LoginViewVisibility");
 
             //this.LoginView.SetBinding(VisibilityProperty, loginviewBinding);
+            //dbContext.Sessions.Add(new Session()
+            //{
+            //    DateTime = new DateTime(2017, 9, 1, 15, 30, 0),
+            //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Inception"),
+            //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 1),
+            //    Price = 50
+            //});
+            //dbContext.Sessions.Add(new Session()
+            //{
+            //    DateTime = new DateTime(2017, 9, 4, 15, 30, 0),
+            //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Dark Knight"),
+            //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 3),
+            //    Price = 50
+            //});
+            //dbContext.Sessions.Add(new Session()
+            //{
+            //    DateTime = new DateTime(2017, 9, 5, 17, 30, 0),
+            //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Dark Knight"),
+            //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 1),
+            //    Price = 50
+            //});
+            //dbContext.Sessions.Add(new Session()
+            //{
+            //    DateTime = new DateTime(2017, 9, 2, 15, 30, 0),
+            //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Dark Knight"),
+            //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 2),
+            //    Price = 50
+            //});
+            //dbContext.Sessions.Add(new Session()
+            //{
+            //    DateTime = new DateTime(2017, 9, 1, 15, 30, 0),
+            //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Lord of the Rings"),
+            //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 3),
+            //    Price = 50
+            //});
+
+            dbContext.SaveChanges();
+
+
+
+
+
             this.DataContext = new MainWindowViewModel(this);
             InitializeComponent();
             this.Width = 300;

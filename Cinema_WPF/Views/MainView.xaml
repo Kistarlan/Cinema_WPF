@@ -149,34 +149,23 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackPanel Margin="0,0,0,5" VerticalAlignment="Bottom" Orientation="Horizontal"
-                        HorizontalAlignment="Center">
-                <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="First" Command="{Binding FirstFilmPageCommand}"></Button>
-                <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0"  Content="Prev" Command="{Binding PreviusFilmPageCommand}"/>
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock Foreground="White" Margin="4,0" Text="{Binding CurrentFilmsPosition}"></TextBlock>
-                    <TextBlock Foreground="White" Margin="4,0" Text="of"></TextBlock>
-                    <TextBlock Foreground="White" Margin="4,0" Text="{Binding FilmPageCount}"></TextBlock>
-                </StackPanel>
-                <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Command="{Binding NextFilmPageCommand}">Next</Button>
-                <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="Last" Command="{Binding LastFilmPageCommand}"/>
-            </StackPanel>
+
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding FilmVisibility}">
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding FilmVisibility}" >
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Button Command="{Binding ShowFilmsCommand}" Grid.Row="0">
+            <Button Command="{Binding ShowFilmsCommand}" Grid.Row="0" Panel.ZIndex="100">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#41b1e1"></Setter>
+                        <Setter Property="Background" Value="#b4e4ff"></Setter>
                         <Setter Property="BorderThickness" Value="0"></Setter>
                         <Setter Property="HorizontalAlignment" Value="Right"></Setter>
                         <Setter Property="VerticalAlignment" Value="Top"></Setter>
                         <Style.Triggers>
                             <Trigger Property="Button.IsMouseOver"  Value="True">
-                                <Setter Property="Background" Value="#41b1e1" />
+                                <Setter Property="Background" Value="#b4e4ff" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -187,6 +176,7 @@
                             <Style.Triggers>
                                 <Trigger Property="Button.IsMouseOver"  Value="True">
                                     <Setter Property="TextDecorations" Value="UnderLine" />
+                                    <Setter Property="Foreground" Value="Black" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -194,10 +184,10 @@
                 </TextBlock>
             </Button>
             <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5, 20, 5, 20" >
-                <TextBlock Foreground="White" Text="{Binding SelectedFilm.Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                <TextBlock Foreground="Black" Text="{Binding SelectedFilm.Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
                     <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
-                        <TextBlock Text="Year: " FontWeight="Bold" Foreground="White" FontSize="16"></TextBlock>
-                        <TextBlock Foreground="White" Text="{Binding SelectedFilm.Year}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                    <TextBlock Text="Year: " FontWeight="Bold" Foreground="Black" FontSize="16"></TextBlock>
+                    <TextBlock Foreground="Black" Text="{Binding SelectedFilm.Year}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
                     </StackPanel>
                 <StackPanel Orientation="Horizontal" >
                     <StackPanel.Style>
@@ -215,9 +205,9 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </StackPanel.Style>    
-                    <TextBlock Text="Description: " FontWeight="Bold" Foreground="White"  HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
-                        <TextBlock Text="{Binding SelectedFilm.Desription}" Foreground="White"  HorizontalAlignment="Stretch"  TextWrapping="Wrap" FontSize="16"  Padding="0,0,40,0">
+                    </StackPanel.Style>
+                    <TextBlock Text="Description: " FontWeight="Bold" Foreground="Black"  HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                    <TextBlock Text="{Binding SelectedFilm.Desription}" Foreground="Black"  HorizontalAlignment="Stretch"  TextWrapping="Wrap" FontSize="16"  Padding="0,0,40,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Width">
@@ -237,10 +227,101 @@
                         </TextBlock>
                     </StackPanel>
             </StackPanel>
+            <TextBlock Grid.Row="1" Foreground="White" Text="Sessions" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+            <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5, 35, 5, 0" Height="Auto">
+                    <!--Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=Height}"-->
+                <ListView x:Name="FilmSessionList" Background="#b4e4ff" Margin="10, 10, 10, 50" BorderThickness="0" 
+                          ItemsSource="{Binding Film_SessionsCollection}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                          VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility ="Disabled"
+                          >
 
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="1" HorizontalAlignment="Left"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="VerticalContentAlignment" Value="Top"/>
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewSessionItem_MouseClick" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
+                                <StackPanel>
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="Date: " FontWeight="Bold" Foreground="Black" FontSize="16"></TextBlock>
+                                        <TextBlock Foreground="Black" Text="{Binding DateTime}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                    </StackPanel>
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="Hall: " FontWeight="Bold" Foreground="Black" FontSize="16"></TextBlock>
+                                        <TextBlock Foreground="Black" Text="{Binding Hall.Number}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                    </StackPanel>
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="Price: " FontWeight="Bold" TextDecorations="UnderLine" Foreground="Black" FontSize="16"></TextBlock>
+                                        <TextBlock Foreground="Black" Text="{Binding Price}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                        <TextBlock Foreground="Black" Text="₴" HorizontalAlignment="Stretch" FontSize="16"/>
+                                    </StackPanel>
+                                    <!--<Line Stroke="White" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Y2="0" StrokeThickness="2"></Line>-->
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
 
         </Grid>
-        
+        <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,0,0,5" VerticalAlignment="Bottom" Orientation="Horizontal"
+                    HorizontalAlignment="Center" Visibility="{Binding PagingVisibility}">
+            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="First" Command="{Binding FirstPageCommand}"></Button>
+            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0"  Content="Prev" Command="{Binding PreviusPageCommand}"/>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Foreground="White" Margin="4,0" Text="{Binding CurrentPagePosition}"></TextBlock>
+                <TextBlock Foreground="White" Margin="4,0" Text="of"></TextBlock>
+                <TextBlock Foreground="White" Margin="4,0" Text="{Binding PageCount}"></TextBlock>
+            </StackPanel>
+            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Command="{Binding NextPageCommand}">Next</Button>
+            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="Last" Command="{Binding LastPageCommand}"/>
+        </StackPanel>
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding SessionVisibility}" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5, 35, 5, 0" Height="Auto">
+                <!--Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=Height}"-->
+                <ListView x:Name="SessionPlacesList" Background="#b4e4ff" Margin="10, 10, 10, 50" BorderThickness="0" 
+                          ItemsSource="{Binding Film_SessionsCollection}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                          VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility ="Disabled"
+                >
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="{Binding SelectedSession.Hall.ColumnCount}" Rows="{Binding SelectedSession.Hall.RowCount}" HorizontalAlignment="Left"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="VerticalContentAlignment" Value="Top"/>
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewSessionItem_MouseClick" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Button Padding="4">
+                                
+                            </Button>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+        </Grid>
+
+            
     </Grid>
        
 </UserControl>

@@ -91,6 +91,14 @@
     <Compile Include="Migrations\201708280832492_All ObservableObject.Designer.cs">
       <DependentUpon>201708280832492_All ObservableObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708290815258_Change Session Model.cs" />
+    <Compile Include="Migrations\201708290815258_Change Session Model.Designer.cs">
+      <DependentUpon>201708290815258_Change Session Model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708291354029_Change_Ticket_Model.cs" />
+    <Compile Include="Migrations\201708291354029_Change_Ticket_Model.Designer.cs">
+      <DependentUpon>201708291354029_Change_Ticket_Model.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -185,6 +193,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708280832492_All ObservableObject.resx">
       <DependentUpon>201708280832492_All ObservableObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708290815258_Change Session Model.resx">
+      <DependentUpon>201708290815258_Change Session Model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708291354029_Change_Ticket_Model.resx">
+      <DependentUpon>201708291354029_Change_Ticket_Model.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

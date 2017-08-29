@@ -35,5 +35,14 @@ namespace Cinema_WPF.Views
                 (this.DataContext as MainViewViewModel).ShowFilm(film);
             }
         }
+
+        private void ListViewSessionItem_MouseClick(object sender, MouseButtonEventArgs e)
+        {
+            Session session = (sender as ListViewItem).Content as Session;
+            if (session != null)
+            {
+                (this.DataContext as MainViewViewModel).ShowSession(session);
+            }
+        }
     }
 }

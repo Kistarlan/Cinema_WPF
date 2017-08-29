@@ -8,7 +8,7 @@ using Cinema_WPF.Models;
 
 namespace Cinema_WPF.Context
 {
-    class CinemaContext : DbContext
+    public class CinemaContext : DbContext
     {
         public CinemaContext() : base("DefaultConnection")
         {
