@@ -15,8 +15,8 @@ namespace Cinema_WPF.Models
         public int Row { get; set; }
         public int Column { get; set; }
         public bool Exist { get; set; }
-        [NotMapped]
-        public Visibility Ordered { get; set; }
+
+        public Boolean Ordered { get; set; }
 
         public int? SessionId { get; set; }
         public virtual Session Session { get; set; }
@@ -26,7 +26,7 @@ namespace Cinema_WPF.Models
 
         public Ticket()
         {
-
+            Ordered = true;
         }
 
         public static void SetOrders(Session session)
@@ -34,7 +34,7 @@ namespace Cinema_WPF.Models
             var tickets = session.Tickets.ToList();
             for (int i = 0; i < tickets.Count; i++)
             {
-                tickets[i].Ordered = Visibility.Visible;
+                tickets[i].Ordered = true;
             }
         }
     }

@@ -54,6 +54,7 @@ namespace Cinema_WPF.ViewModels
         public ICommand LastPageCommand { get; private set; }
         public ICommand FirstPageCommand { get; private set; }
         public ICommand PreviusPageCommand { get; private set; }
+        public ICommand SellCommand { get; private set; }
 
 
 
@@ -66,6 +67,7 @@ namespace Cinema_WPF.ViewModels
             FirstPageCommand = new RelayCommand(FirstPage);
             LastPageCommand = new RelayCommand(LastPage);
             ShowFilmsCommand = new RelayCommand(ShowFilms);
+            SellCommand = new RelayCommand(SellTickets);
 
             FilmsVisibility = Visibility.Visible;
             PagingVisibility = Visibility.Visible;
@@ -230,9 +232,10 @@ namespace Cinema_WPF.ViewModels
         {
             //ticket.Ordered = Visibility.Hidden;
             //ticket.Row = 100000000;
-            ticket.Ordered = Visibility.Visible;
+            //ticket.Ordered = Visibility.Visible;
             //var t = db.Tickets.FirstOrDefault(s => s.Id == ticket.Id);
             ////t.Exist = false;
+            ticket.Ordered = false;
             //db.SaveChanges();
             SessionTickets = GetList.GetTickets(SelectedSession);
             SelectedTickets.Add(ticket);
@@ -243,7 +246,7 @@ namespace Cinema_WPF.ViewModels
 
         public void RemoveTicketFromCart(Ticket ticket)
         {
-            ticket.Ordered = Visibility.Visible;
+            ticket.Ordered = true;
             SelectedTickets.Remove(ticket);
             SessionTickets = GetList.GetTickets(SelectedSession);
             SelectedPrice -= SelectedSession.Price;
@@ -263,10 +266,11 @@ namespace Cinema_WPF.ViewModels
             db = new CinemaContext();
             for (int i = 0; i < SelectedTickets.Count; i++)
             {
-                SelectedTickets[i].Ordered = Visibility.Visible;
+                SelectedTickets[i].Ordered = true;
                 SelectedTickets[i].Exist = false;
             }
             db.SaveChanges();
+            SelectedPrice = 0;
             SelectedTickets = new List<Ticket>();
             SelectedPrice = 0;
             TicketPropertyChanged();

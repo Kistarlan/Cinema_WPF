@@ -34,5 +34,56 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="SellButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#b4e4ff"></Setter>
+
+        <Setter Property="BorderThickness" Value="0"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#c7e4ee"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#41b1e1"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PlacesToogleButtonStyle" TargetType="{x:Type ToggleButton}">
+        <!--<Setter Property="Background" Value="#0aa6bc"></Setter>-->
+        <Setter Property="Foreground" Value="#ffffff"></Setter>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Style.Triggers>
+            <!--<EventTrigger RoutedEvent="ToggleButton.Checked">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation
+                            From="#0aa6bc"
+                            To="#74c9cb"
+                            Duration="0:0:.1" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation
+                            From="#74c9cb"
+                            To="#0aa6bc"
+                            Duration="0:0:.1" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>-->
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="Black"></Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#c7e4ee"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#a1dcfa"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>

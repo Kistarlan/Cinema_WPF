@@ -326,7 +326,7 @@
                         <DataTemplate>
                             <Grid>
 
-                                <Button Padding="4" IsEnabled="{Binding Exist}" Style="{StaticResource PlacesButtonStyle}" Panel.ZIndex="100" Visibility="{Binding Ordered}">
+                                <Button Padding="4" IsEnabled="{Binding Exist}" Style="{StaticResource PlacesButtonStyle}" Panel.ZIndex="100" Visibility="{Binding Path=Ordered, Converter={StaticResource ButtonVisibilityConverter}}">
                                     
                                     
                                         <StackPanel Orientation="Vertical" >
@@ -346,7 +346,7 @@
                                         <Style TargetType="{x:Type Button}">
                                             
                                             <!--<Setter Property="Background" Value="#a1dcfa"></Setter>-->
-                                            <Setter Property="Background" Value="Black"></Setter>
+                                            <Setter Property="Background" Value="#ccf1ff"></Setter>
                                             <Setter Property="Foreground" Value="#ffffff"></Setter>
                                             <Setter Property="FontSize" Value="12"/>
                                             <Setter Property="BorderThickness" Value="0"/>
@@ -363,7 +363,7 @@
                                                 <Trigger >
                                                 </Trigger>-->
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#ccf1ff"/>
+                                                    <Setter Property="Background" Value="#f4feff"/>
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -384,7 +384,9 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+
             </Grid>
+            <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Height="35"  Margin="10" Command="{Binding SellCommand}" Style="{StaticResource SellButtonStyle}" FontSize="30" FontWeight="Bold"  Content="Sell"/>
 
         </Grid>
 

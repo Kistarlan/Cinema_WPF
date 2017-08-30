@@ -116,6 +116,10 @@
     <Compile Include="Migrations\201708301243130_Change ordered parametr to Ticket1.Designer.cs">
       <DependentUpon>201708301243130_Change ordered parametr to Ticket1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708301307172_Change ordered parametr to Ticket2.cs" />
+    <Compile Include="Migrations\201708301307172_Change ordered parametr to Ticket2.Designer.cs">
+      <DependentUpon>201708301307172_Change ordered parametr to Ticket2.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -228,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708301243130_Change ordered parametr to Ticket1.resx">
       <DependentUpon>201708301243130_Change ordered parametr to Ticket1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708301307172_Change ordered parametr to Ticket2.resx">
+      <DependentUpon>201708301307172_Change ordered parametr to Ticket2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

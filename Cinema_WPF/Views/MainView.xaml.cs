@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -24,7 +25,7 @@ namespace Cinema_WPF.Views
     {
         public MainView()
         {
-            DataContext = new MainViewViewModel();
+            //DataContext = new MainViewViewModel();
             InitializeComponent();
         }
 
@@ -51,11 +52,20 @@ namespace Cinema_WPF.Views
             Ticket ticket = (sender as ListViewItem).Content as Ticket;
             if (ticket != null)
             {
-                if(ticket.Ordered == Visibility.Visible)
+                if(ticket.Ordered == true)
                     (this.DataContext as MainViewViewModel).AddTicketToCart(ticket);
                 else
                     (this.DataContext as MainViewViewModel).RemoveTicketFromCart(ticket);
             }
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+           ToggleButton tbutton = sender as ToggleButton;
+            if (tbutton.IsChecked == true)
+                tbutton.IsChecked = false;
+            else
+                tbutton.IsChecked = true;
         }
     }
 }

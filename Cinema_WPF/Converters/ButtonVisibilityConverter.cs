@@ -14,22 +14,10 @@ namespace Cinema_WPF.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool Value = (bool)value;
-            bool Parameter = Boolean.Parse((string)parameter);
-
             if (Value == true)
-            {
-                if (Parameter == true)
-                    return Visibility.Hidden;
-                else
-                    return Visibility.Visible;
-            }
+                return Visibility.Visible;
             else
-            {
-                if (Parameter == true)
-                    return Visibility.Visible;
-                else
-                    return Visibility.Hidden;
-            }
+                return Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
