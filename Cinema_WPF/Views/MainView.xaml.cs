@@ -24,6 +24,7 @@ namespace Cinema_WPF.Views
     {
         public MainView()
         {
+            DataContext = new MainViewViewModel();
             InitializeComponent();
         }
 
@@ -42,6 +43,18 @@ namespace Cinema_WPF.Views
             if (session != null)
             {
                 (this.DataContext as MainViewViewModel).ShowSession(session);
+            }
+        }
+
+        private void ListViewTicketsItem_MouseClick(object sender, MouseButtonEventArgs e)
+        {
+            Ticket ticket = (sender as ListViewItem).Content as Ticket;
+            if (ticket != null)
+            {
+                if(ticket.Ordered == Visibility.Visible)
+                    (this.DataContext as MainViewViewModel).AddTicketToCart(ticket);
+                else
+                    (this.DataContext as MainViewViewModel).RemoveTicketFromCart(ticket);
             }
         }
     }

@@ -18,4 +18,21 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="PlacesButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#0aa6bc"></Setter>
+        <Setter Property="Foreground" Value="#ffffff"></Setter>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#c7e4ee"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#a1dcfa"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
 </ResourceDictionary>

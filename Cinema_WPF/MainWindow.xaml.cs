@@ -30,12 +30,12 @@ namespace Cinema_WPF
         public MainWindow()
         {
             dbContext = new CinemaContext();
-            //List<Session> list = dbContext.Sessions.ToList();
-            //for (int i = 0; i < list.Count(); i++)
-            //{
-            //    //dbContext.Tickets.RemoveRange(list[i].Tickets);
-            //    list[i].GenerateTickets(dbContext);
-            //}
+            List<Session> list = dbContext.Sessions.ToList();
+            for (int i = 0; i < list.Count(); i++)
+            {
+                dbContext.Tickets.RemoveRange(list[i].Tickets);
+                list[i].GenerateTickets(dbContext);
+            }
             dbContext.SaveChanges();
             //dbContext.Sessions.RemoveRange(dbContext.Sessions);
             //dbContext.s

@@ -20,6 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:WidthConverter x:Key="WidthConverter"></converters:WidthConverter>
+            <converters:ButtonVisibilityConverter x:Key="ButtonVisibilityConverter"></converters:ButtonVisibilityConverter>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="#41b1e1" >
@@ -33,7 +34,7 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Command="{Binding LogoutCommand}" Grid.Column="0" Grid.Row="0">
+        <Button Command="{Binding ShowFilmsCommand}" Grid.Column="0" Grid.Row="0">
             <TextBlock Text="Films" Foreground="White" FontFamily="Georgia" FontWeight="Bold" FontSize="28">
                 
             </TextBlock>
@@ -287,13 +288,25 @@
         </StackPanel>
         <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding SessionVisibility}" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="200"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5, 35, 5, 0" Height="Auto">
+            <StackPanel Grid.Row="0">
+                <StackPanel Margin="15" Orientation="Vertical">
+                    <TextBlock Foreground="Black" Text="Film: " HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                    <TextBlock Foreground="Black" Text="{Binding SelectedSession.Film.Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                </StackPanel>
+                <StackPanel Margin="15" Orientation="Horizontal">
+                    <TextBlock Foreground="Black" Text="Price: " HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                    <TextBlock Foreground="Black" Text="{Binding SelectedPrice}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                    <TextBlock Foreground="Black" Text="₴" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5, 50, 5, 0" Height="Auto">
                 <!--Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=Height}"-->
                 <ListView x:Name="SessionPlacesList" Background="#b4e4ff" Margin="10, 10, 10, 50" BorderThickness="0" 
-                          ItemsSource="{Binding Film_SessionsCollection}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                          ItemsSource="{Binding SessionTickets}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
                           VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility ="Disabled"
                 >
 
@@ -305,15 +318,69 @@
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="VerticalContentAlignment" Value="Top"/>
-                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewSessionItem_MouseClick" />
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewTicketsItem_MouseClick" />
                         </Style>
                     </ListView.ItemContainerStyle>
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Button Padding="4">
-                                
-                            </Button>
+                            <Grid>
+
+                                <Button Padding="4" IsEnabled="{Binding Exist}" Style="{StaticResource PlacesButtonStyle}" Panel.ZIndex="100" Visibility="{Binding Ordered}">
+                                    
+                                    
+                                        <StackPanel Orientation="Vertical" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Foreground="Black" Text="Row: " HorizontalAlignment="Stretch" FontSize="14"/>
+                                            <TextBlock Foreground="Black" Text="{Binding Row}" HorizontalAlignment="Stretch" FontSize="14"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Foreground="Black" Text="Column: " HorizontalAlignment="Stretch" FontSize="14"/>
+                                            <TextBlock Foreground="Black" Text="{Binding Column}" HorizontalAlignment="Stretch" FontSize="14"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Button>
+                                <Button Padding="4" IsEnabled="{Binding Exist}" >
+                                    
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            
+                                            <!--<Setter Property="Background" Value="#a1dcfa"></Setter>-->
+                                            <Setter Property="Background" Value="Black"></Setter>
+                                            <Setter Property="Foreground" Value="#ffffff"></Setter>
+                                            <Setter Property="FontSize" Value="12"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Style.Triggers>
+                                                <!--<MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsKeyboardFocused" Value="True" />
+                                                        <Condition Binding="{Binding Path=Ordered}"  Value="True" />
+                                                    </MultiTrigger.Conditions>
+                                                    <MultiTrigger.Setters>
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </MultiTrigger.Setters>
+                                                </MultiTrigger>
+                                                <Trigger >
+                                                </Trigger>-->
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#ccf1ff"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <StackPanel Orientation="Vertical" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Foreground="Black" Text="Row: " HorizontalAlignment="Stretch" FontSize="14"/>
+                                            <TextBlock Foreground="Black" Text="{Binding Row}" HorizontalAlignment="Stretch" FontSize="14"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Foreground="Black" Text="Column: " HorizontalAlignment="Stretch" FontSize="14"/>
+                                            <TextBlock Foreground="Black" Text="{Binding Column}" HorizontalAlignment="Stretch" FontSize="14"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                            
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

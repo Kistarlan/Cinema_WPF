@@ -22,6 +22,7 @@ namespace Cinema_WPF.ViewModels
         public MainWindowViewModel ParentMainWindowViewModel { get; set; }
         public ObservableCollection<Film> FilmsCollection { get; private set; }
         public ObservableCollection<Session> Film_SessionsCollection { get; private set; }
+        public ObservableCollection<Ticket> SessionTickets { get; private set; }
 
         public Visibility FilmsVisibility { get; set; }
         public Visibility SessionsVisibility { get; set; }
@@ -32,6 +33,9 @@ namespace Cinema_WPF.ViewModels
 
 
         public CinemaContext db;
+        public double SelectedPrice { get; private set; } = 0;
+        public List<Ticket> SelectedTickets { get; private set; }
+        //public List<Ticket> SessionTickets { get; private set; }
         public User User { get; set; }
         public Film SelectedFilm { get; private set; }
         public Session SelectedSession { get; private set; }
@@ -71,6 +75,7 @@ namespace Cinema_WPF.ViewModels
             Film_SessionsCollection = null;
             FilmsCollection = null;
             FilmPageCount = GetList.GetFilmPages(db.Films, FilmPageSize);
+            SelectedTickets = null;
             ChangeFilmsCollection();
         }
 
@@ -211,8 +216,60 @@ namespace Cinema_WPF.ViewModels
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Visible;
             SelectedSession = session;
+            SessionTickets = GetList.GetTickets(SelectedSession);
+            SelectedTickets = new List<Ticket>();
+            //Ticket.SetOrders(SelectedSession);
+            RaisePropertyChanged(() => SelectedSession);
+            TicketPropertyChanged();
+            VisibilityPropertyChanged();
+        }
 
 
+
+        public void AddTicketToCart(Ticket ticket)
+        {
+            //ticket.Ordered = Visibility.Hidden;
+            //ticket.Row = 100000000;
+            ticket.Ordered = Visibility.Visible;
+            //var t = db.Tickets.FirstOrDefault(s => s.Id == ticket.Id);
+            ////t.Exist = false;
+            //db.SaveChanges();
+            SessionTickets = GetList.GetTickets(SelectedSession);
+            SelectedTickets.Add(ticket);
+            SelectedPrice += SelectedSession.Price;
+            //RaisePropertyChanged(() => ticket);
+            TicketPropertyChanged();
+        }
+
+        public void RemoveTicketFromCart(Ticket ticket)
+        {
+            ticket.Ordered = Visibility.Visible;
+            SelectedTickets.Remove(ticket);
+            SessionTickets = GetList.GetTickets(SelectedSession);
+            SelectedPrice -= SelectedSession.Price;
+            TicketPropertyChanged();
+        }
+
+        private void TicketPropertyChanged()
+        {
+            RaisePropertyChanged(() => SelectedPrice);
+            RaisePropertyChanged(() => SelectedTickets);
+            RaisePropertyChanged(() => SessionTickets);
+            RaisePropertyChanged(() => SelectedSession.Tickets);
+        }
+
+        private void SellTickets()
+        {
+            db = new CinemaContext();
+            for (int i = 0; i < SelectedTickets.Count; i++)
+            {
+                SelectedTickets[i].Ordered = Visibility.Visible;
+                SelectedTickets[i].Exist = false;
+            }
+            db.SaveChanges();
+            SelectedTickets = new List<Ticket>();
+            SelectedPrice = 0;
+            TicketPropertyChanged();
         }
     }
 }

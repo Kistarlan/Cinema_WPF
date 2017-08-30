@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ButtonVisibilityConverter.cs" />
     <Compile Include="Converters\WidthConverter.cs" />
     <Compile Include="Helper\GetList.cs" />
     <Compile Include="Migrations\201708280711540_All public.cs" />
@@ -98,6 +99,22 @@
     <Compile Include="Migrations\201708291354029_Change_Ticket_Model.cs" />
     <Compile Include="Migrations\201708291354029_Change_Ticket_Model.Designer.cs">
       <DependentUpon>201708291354029_Change_Ticket_Model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708300803498_Add Ordered parametr to Ticket.cs" />
+    <Compile Include="Migrations\201708300803498_Add Ordered parametr to Ticket.Designer.cs">
+      <DependentUpon>201708300803498_Add Ordered parametr to Ticket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708300857518_Change Ordered parametr to Ticket.cs" />
+    <Compile Include="Migrations\201708300857518_Change Ordered parametr to Ticket.Designer.cs">
+      <DependentUpon>201708300857518_Change Ordered parametr to Ticket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708300918484_Delete ordered parametr to Ticket.cs" />
+    <Compile Include="Migrations\201708300918484_Delete ordered parametr to Ticket.Designer.cs">
+      <DependentUpon>201708300918484_Delete ordered parametr to Ticket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708301243130_Change ordered parametr to Ticket1.cs" />
+    <Compile Include="Migrations\201708301243130_Change ordered parametr to Ticket1.Designer.cs">
+      <DependentUpon>201708301243130_Change ordered parametr to Ticket1.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewViewModel.cs" />
@@ -199,6 +216,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708291354029_Change_Ticket_Model.resx">
       <DependentUpon>201708291354029_Change_Ticket_Model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708300803498_Add Ordered parametr to Ticket.resx">
+      <DependentUpon>201708300803498_Add Ordered parametr to Ticket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708300857518_Change Ordered parametr to Ticket.resx">
+      <DependentUpon>201708300857518_Change Ordered parametr to Ticket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708300918484_Delete ordered parametr to Ticket.resx">
+      <DependentUpon>201708300918484_Delete ordered parametr to Ticket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708301243130_Change ordered parametr to Ticket1.resx">
+      <DependentUpon>201708301243130_Change ordered parametr to Ticket1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

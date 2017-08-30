@@ -12,7 +12,6 @@ namespace Cinema_WPF.Context
     {
         public CinemaContext() : base("DefaultConnection")
         {
-  
         }
 
         public DbSet<Film> Films { get; set; }

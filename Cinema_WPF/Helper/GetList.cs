@@ -48,6 +48,7 @@ namespace Cinema_WPF.Helper
                     rezult.Add(Sessions[i]);
                 }
                 return rezult;
+
             }
             else
             {
@@ -57,6 +58,19 @@ namespace Cinema_WPF.Helper
                 }
                 return rezult;
             }
+        }
+
+        public static ObservableCollection<Ticket> GetTickets(Session session)
+        {
+
+            ObservableCollection<Ticket> rezult = new ObservableCollection<Ticket>();
+            var tickets = session.Tickets.ToList();
+            int count = session.Tickets.Count();
+            for (int i = 0; i < count; i++)
+            {
+                rezult.Add(tickets[i]);
+            }
+            return rezult;
         }
 
         public static int GetFilmPages(DbSet<Film> films, int size)

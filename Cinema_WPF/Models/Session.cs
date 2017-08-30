@@ -16,6 +16,7 @@ namespace Cinema_WPF.Models
         public DateTime DateTime { get; set; }
         public double Price { get; set; }
 
+
         public int? FilmId { get; set; }
         public virtual Film Film { get; set; }
 
@@ -55,14 +56,14 @@ namespace Cinema_WPF.Models
                 return;
             //using (CinemaContext db = new CinemaContext())
             {
-                for (int i = 0; i < Hall.ColumnCount; i++)
+                for (int i = 0; i < Hall.RowCount; i++)
                 {
-                    for (int j = 0; j < Hall.RowCount; j++)
+                    for (int j = 0; j < Hall.ColumnCount; j++)
                     {
                         db.Tickets.Add(new Ticket()
                         {
-                            Row = j,
-                            Column = i,
+                            Row = i,
+                            Column = j,
                             Exist = true,
                             Session = this
                         });
