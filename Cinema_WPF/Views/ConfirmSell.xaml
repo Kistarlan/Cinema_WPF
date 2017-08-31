@@ -11,7 +11,10 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Title="ConfirmSell" Height="Auto" Width="300">
+        Title="ConfirmSell" 
+        Width="300"
+        SizeToContent="WidthAndHeight"
+        >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,12 +23,17 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid Background="#41b1e1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <StackPanel>
             
         <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
             <TextBlock Text="Price: " FontWeight="Bold" Foreground="Black" FontSize="16"></TextBlock>
             <TextBlock Foreground="Black" Name="PriceTextBlock" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
         </StackPanel>
+        <Grid>
         <ListBox x:Name="TicketList" Background="#41b1e1" Margin="10">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -48,6 +56,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        </Grid>
             <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                 <Button Background="#41b1e1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Height="35"  Margin="10" IsDefault="True" Click="Sell_Click" Style="{StaticResource SellButtonStyle}" FontSize="30" FontWeight="Bold"  Content="Sell"/>
                 <Button Background="#41b1e1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Height="35"  Margin="10" IsCancel="True" Style="{StaticResource SellButtonStyle}" FontSize="30" FontWeight="Bold"  Content="Cancel"/>

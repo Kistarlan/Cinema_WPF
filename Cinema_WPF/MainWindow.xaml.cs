@@ -36,8 +36,8 @@ namespace Cinema_WPF
             //    dbContext.Tickets.RemoveRange(list[i].Tickets);
             //    list[i].GenerateTickets(dbContext);
             //}
-            dbContext.SaveChanges();
             //dbContext.Sessions.RemoveRange(dbContext.Sessions);
+            //dbContext.SaveChanges();
             //dbContext.s
             //foreach (var session in dbContext.Sessions)
             //{
@@ -69,28 +69,28 @@ namespace Cinema_WPF
             //});
             //dbContext.Sessions.Add(new Session()
             //{
-            //    DateTime = new DateTime(2017, 9, 4, 15, 30, 0),
+            //    DateTime = new DateTime(2017, 9, 6, 15, 30, 0),
             //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Dark Knight"),
             //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 3),
             //    Price = 50
             //});
             //dbContext.Sessions.Add(new Session()
             //{
-            //    DateTime = new DateTime(2017, 9, 5, 17, 30, 0),
+            //    DateTime = new DateTime(2017, 9, 7, 17, 30, 0),
             //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Dark Knight"),
             //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 1),
             //    Price = 50
             //});
             //dbContext.Sessions.Add(new Session()
             //{
-            //    DateTime = new DateTime(2017, 9, 2, 15, 30, 0),
+            //    DateTime = new DateTime(2017, 9, 7, 15, 30, 0),
             //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Dark Knight"),
             //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 2),
             //    Price = 50
             //});
             //dbContext.Sessions.Add(new Session()
             //{
-            //    DateTime = new DateTime(2017, 9, 1, 15, 30, 0),
+            //    DateTime = new DateTime(2017, 9, 5, 15, 30, 0),
             //    Film = dbContext.Films.FirstOrDefault(i => i.Name.ToLower() == "Lord of the Rings"),
             //    Hall = dbContext.Halls.FirstOrDefault(h => h.Number == 3),
             //    Price = 50

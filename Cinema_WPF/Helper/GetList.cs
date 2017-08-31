@@ -35,7 +35,7 @@ namespace Cinema_WPF.Helper
             }
         }
 
-        public static ObservableCollection<Session> GetFilm_Sessions(List<Session> sessions, int start, int size)
+        public static ObservableCollection<Session> Get_Sessions(List<Session> sessions, int start, int size)
         {
 
             ObservableCollection<Session> rezult = new ObservableCollection<Session>();

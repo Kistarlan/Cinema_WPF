@@ -50,7 +50,7 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Button Command="{Binding LogoutCommand}" Grid.Column="0" Grid.Row="1">
+        <Button Command="{Binding ShowSessionsCommand}" Grid.Column="0" Grid.Row="1">
             <TextBlock Text="Sessions" Foreground="White" FontFamily="Georgia" FontWeight="Bold" FontSize="28">
 
             </TextBlock>
@@ -118,14 +118,14 @@
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
                             <StackPanel>
-                                <TextBlock Foreground="White" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
                                 <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
-                                    <TextBlock Text="Year: " FontWeight="Bold" Foreground="White" FontSize="16"></TextBlock>
-                                    <TextBlock Foreground="White" Text="{Binding Year}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                    <TextBlock Text="Year: " FontWeight="Bold" Foreground="Black" FontSize="16"></TextBlock>
+                                    <TextBlock Foreground="Black" Text="{Binding Year}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
                                 </StackPanel>
                                 <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}">
-                                    <TextBlock Text="Description: " FontWeight="Bold" Foreground="White"  HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
-                                    <TextBlock Text="{Binding Desription}" Foreground="White"  HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="16"  Padding="0,0,40,0">
+                                    <TextBlock Text="Description: " FontWeight="Bold" Foreground="Black"  HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                    <TextBlock Text="{Binding Desription}" Foreground="Black"  HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="16"  Padding="0,0,40,0">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Width">
@@ -228,7 +228,7 @@
                         </TextBlock>
                     </StackPanel>
             </StackPanel>
-            <TextBlock Grid.Row="1" Foreground="White" Text="Sessions" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+            <TextBlock Grid.Row="1" Foreground="Black" Text="Sessions" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
             <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5, 35, 5, 0" Height="Auto">
                     <!--Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=Height}"-->
                 <ListView x:Name="FilmSessionList" Background="#b4e4ff" Margin="10, 10, 10, 50" BorderThickness="0" 
@@ -280,6 +280,33 @@
                 <RowDefinition Height="200"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Button Command="{Binding ShowSessionsCommand}" Grid.Row="0" Panel.ZIndex="100" Visibility="{Binding BackToSessionsVisibility}" CommandParameter="{Binding SelectedSession.Film}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#b4e4ff"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                        <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                        <Setter Property="VerticalAlignment" Value="Top"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Background" Value="#b4e4ff" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock Text="Back to Sessions"  HorizontalAlignment="Center"  FontFamily="Georgia" FontWeight="Bold" FontSize="14">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Button.IsMouseOver"  Value="True">
+                                    <Setter Property="TextDecorations" Value="UnderLine" />
+                                    <Setter Property="Foreground" Value="Black" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Button>
             <Button Command="{Binding ShowFilmCommand}" Grid.Row="0" Panel.ZIndex="100" Visibility="{Binding BackToFilmVisibility}" CommandParameter="{Binding SelectedSession.Film}">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
@@ -367,17 +394,6 @@
                                             <Setter Property="FontSize" Value="12"/>
                                             <Setter Property="BorderThickness" Value="0"/>
                                             <Style.Triggers>
-                                                <!--<MultiTrigger>
-                                                    <MultiTrigger.Conditions>
-                                                        <Condition Property="IsKeyboardFocused" Value="True" />
-                                                        <Condition Binding="{Binding Path=Ordered}"  Value="True" />
-                                                    </MultiTrigger.Conditions>
-                                                    <MultiTrigger.Setters>
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </MultiTrigger.Setters>
-                                                </MultiTrigger>
-                                                <Trigger >
-                                                </Trigger>-->
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Background" Value="#f4feff"/>
                                                 </Trigger>
@@ -406,6 +422,48 @@
 
         </Grid>
 
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding SessionsVisibility}">
+            <ListView x:Name="SessionsList" Background="#b4e4ff" Margin="10, 10, 10, 50" BorderThickness="0" 
+                      ItemsSource="{Binding SessionCollection}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                      VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="1" HorizontalAlignment="Left"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewSessionItem_MouseClick" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
+                            <StackPanel>
+                                <TextBlock Foreground="Black" Text="{Binding Film.Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                    <TextBlock Text="Date: " FontWeight="Bold" Foreground="Black" FontSize="16"></TextBlock>
+                                    <TextBlock Foreground="Black" Text="{Binding DateTime}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                    <TextBlock Text="Hall: " FontWeight="Bold" Foreground="Black" FontSize="16"></TextBlock>
+                                    <TextBlock Foreground="Black" Text="{Binding Hall.Number}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                    <TextBlock Text="Price: " FontWeight="Bold" TextDecorations="UnderLine" Foreground="Black" FontSize="16"></TextBlock>
+                                    <TextBlock Foreground="Black" Text="{Binding Price}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                    <TextBlock Foreground="Black" Text="₴" HorizontalAlignment="Stretch" FontSize="16"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
         <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,0,0,5" VerticalAlignment="Bottom" Orientation="Horizontal"
                     HorizontalAlignment="Center" Visibility="{Binding PagingVisibility}">
             <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="First" Command="{Binding FirstPageCommand}"></Button>

@@ -25,6 +25,7 @@ namespace Cinema_WPF.ViewModels
         public ObservableCollection<Film> FilmsCollection { get; private set; }
         public ObservableCollection<Session> Film_SessionsCollection { get; private set; }
         public ObservableCollection<Ticket> SessionTickets { get; private set; }
+        public ObservableCollection<Session> SessionCollection { get; private set; }
 
         public Visibility FilmsVisibility { get; set; }
         public Visibility SessionsVisibility { get; set; }
@@ -32,6 +33,7 @@ namespace Cinema_WPF.ViewModels
         public Visibility FilmVisibility { get; set; }
         public Visibility PagingVisibility { get; set; }
         public Visibility BackToFilmVisibility { get; private set; }
+        public Visibility BackToSessionsVisibility { get; private set; }
 
 
 
@@ -44,10 +46,13 @@ namespace Cinema_WPF.ViewModels
         public Session SelectedSession { get; private set; }
         public int FilmPageCount { get; set; }
         public int Film_SessionPageCount { get; set; }
+        public int SessionPageCount { get; set; }
         public int FilmPageSize { get; set; } = 5;
         public int Film_SessionPageSize { get; set; } = 10;
+        public int SessionPageSize { get; set; } = 10;
         public int CurrentFilmsPosition { get; set; } = 1;
         public int CurrentFilm_SessionPosition { get; set; } = 1;
+        public int CurrentSessionPosition { get; set; } = 1;
         public int CurrentPagePosition { get; set; }
         public int PageCount { get; set; }
 
@@ -59,6 +64,7 @@ namespace Cinema_WPF.ViewModels
         public ICommand PreviusPageCommand { get; private set; }
         public ICommand SellCommand { get; private set; }
         public ICommand ShowFilmCommand { get; private set; }
+        public ICommand ShowSessionsCommand { get; private set; }
         
 
 
@@ -73,12 +79,13 @@ namespace Cinema_WPF.ViewModels
             ShowFilmsCommand = new RelayCommand(ShowFilms);
             SellCommand = new RelayCommand(SellTickets);
             ShowFilmCommand = new RelayCommand<Film>(ShowFilm);
-
+            ShowSessionsCommand = new RelayCommand(ShowSessions);
             FilmsVisibility = Visibility.Visible;
             PagingVisibility = Visibility.Visible;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
+            BackToSessionsVisibility = Visibility.Hidden;
             Film_SessionsCollection = null;
             FilmsCollection = null;
             FilmPageCount = GetList.GetFilmPages(db.Films, FilmPageSize);
@@ -100,7 +107,12 @@ namespace Cinema_WPF.ViewModels
                     CurrentFilm_SessionPosition++;
                 ChangeFilm_SessionCollection();
             }
-
+            if (SessionsVisibility == Visibility.Visible)
+            {
+                if (CurrentSessionPosition != SessionPageCount)
+                    CurrentSessionPosition++;
+                Change_SessionCollection();
+            }
         }
 
         private void PreviusPage()
@@ -117,6 +129,12 @@ namespace Cinema_WPF.ViewModels
                     CurrentFilm_SessionPosition--;
                 ChangeFilm_SessionCollection();
             }
+            if (SessionsVisibility == Visibility.Visible)
+            {
+                if (CurrentSessionPosition != 1)
+                    CurrentSessionPosition--;
+                Change_SessionCollection();
+            }
         }
         private void FirstPage()
         {
@@ -131,6 +149,12 @@ namespace Cinema_WPF.ViewModels
                 if (CurrentFilm_SessionPosition != 1)
                     CurrentFilm_SessionPosition = 1;
                 ChangeFilm_SessionCollection();
+            }
+            if (SessionsVisibility == Visibility.Visible)
+            {
+                if (CurrentSessionPosition != 1)
+                    CurrentSessionPosition = 1;
+                Change_SessionCollection();
             }
         }
         private void LastPage()
@@ -147,6 +171,12 @@ namespace Cinema_WPF.ViewModels
                     CurrentFilm_SessionPosition = Film_SessionPageCount;
                 ChangeFilm_SessionCollection();
             }
+            if (SessionsVisibility == Visibility.Visible)
+            {
+                if (CurrentSessionPosition != SessionPageCount)
+                    CurrentSessionPosition = SessionPageCount;
+                Change_SessionCollection();
+            }
         }
 
         private void ChangeFilmsCollection()
@@ -162,8 +192,17 @@ namespace Cinema_WPF.ViewModels
         {
             CurrentPagePosition = CurrentFilm_SessionPosition;
             PageCount = Film_SessionPageCount;
-            Film_SessionsCollection = GetList.GetFilm_Sessions(new List<Session>(db.Sessions.Where(s => s.FilmId == SelectedFilm.Id)), (CurrentFilm_SessionPosition - 1) * Film_SessionPageSize, Film_SessionPageSize);
+            Film_SessionsCollection = GetList.Get_Sessions(new List<Session>(db.Sessions.Where(s => s.FilmId == SelectedFilm.Id)), (CurrentFilm_SessionPosition - 1) * Film_SessionPageSize, Film_SessionPageSize);
             RaisePropertyChanged(() => Film_SessionsCollection);
+            ChangePaging();
+        }
+
+        private void Change_SessionCollection()
+        {
+            CurrentPagePosition = CurrentSessionPosition;
+            PageCount = SessionPageCount;
+            SessionCollection = GetList.Get_Sessions(new List<Session>(db.Sessions), (CurrentSessionPosition - 1) * SessionPageSize, SessionPageSize);
+            RaisePropertyChanged(() => SessionCollection);
             ChangePaging();
         }
 
@@ -186,6 +225,8 @@ namespace Cinema_WPF.ViewModels
         public void ShowFilm(Film film)
         {
             BackToFilmVisibility = Visibility.Visible;
+            BackToSessionsVisibility = Visibility.Hidden;
+
             SelectedFilm = film;
             var ss = new List<Session>(db.Sessions.Where(s => s.FilmId == SelectedFilm.Id));
             Film_SessionPageCount = GetList.GetSessionPages(
@@ -194,17 +235,34 @@ namespace Cinema_WPF.ViewModels
             FilmsVisibility = Visibility.Hidden;
             FilmVisibility = Visibility.Visible;
             SessionVisibility = Visibility.Hidden;
+            SessionsVisibility = Visibility.Hidden;
             ChangeFilm_SessionCollection();
             RaisePropertyChanged(() => SelectedFilm);
             VisibilityPropertyChanged();
         }
 
+        private void ShowSessions()
+        {
+            BackToSessionsVisibility = Visibility.Visible;
+            BackToFilmVisibility = Visibility.Hidden;
+            FilmsVisibility = Visibility.Hidden;
+            FilmVisibility = Visibility.Hidden;
+            SessionVisibility = Visibility.Hidden;
+            SessionsVisibility = Visibility.Visible;
+            SessionPageCount = GetList.GetSessionPages(new List<Session>(db.Sessions), SessionPageSize);
+            CurrentSessionPosition = 1;
+            Change_SessionCollection();
+            VisibilityPropertyChanged();
+            //SessionCollection
+
+        }
         public void ShowFilms()
         {
             CurrentFilm_SessionPosition = 1;
             FilmsVisibility = Visibility.Visible;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
+            SessionsVisibility = Visibility.Hidden;
             ChangeFilmsCollection();
             //RaisePropertyChanged(() => SelectedFilm);
             VisibilityPropertyChanged();
@@ -216,13 +274,17 @@ namespace Cinema_WPF.ViewModels
             RaisePropertyChanged(() => FilmVisibility);
             RaisePropertyChanged(() => SessionsVisibility);
             RaisePropertyChanged(() => SessionVisibility);
+            RaisePropertyChanged(() => BackToFilmVisibility);
+            RaisePropertyChanged(() => BackToSessionsVisibility);
         }
+
 
         public void ShowSession(Session session)
         {
             FilmsVisibility = Visibility.Hidden;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Visible;
+            SessionsVisibility = Visibility.Hidden;
             SelectedSession = session;
             SessionTickets = GetList.GetTickets(SelectedSession);
             SelectedTickets = new List<Ticket>();
