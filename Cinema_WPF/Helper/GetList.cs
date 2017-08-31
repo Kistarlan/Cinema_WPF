@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Cinema_WPF.Models;
 
 namespace Cinema_WPF.Helper
@@ -66,6 +67,7 @@ namespace Cinema_WPF.Helper
             ObservableCollection<Ticket> rezult = new ObservableCollection<Ticket>();
             var tickets = session.Tickets.ToList();
             int count = session.Tickets.Count();
+            SortTickets(tickets);
             for (int i = 0; i < count; i++)
             {
                 rezult.Add(tickets[i]);
@@ -93,6 +95,31 @@ namespace Cinema_WPF.Helper
                 return sessions.Count() / size;
             else
                 return sessions.Count() / size + 1;
+        }
+
+        public static void SortTickets(List<Ticket> tickets)
+        {
+            for (int i = 0; i < tickets.Count; i++)
+            {
+                for (int j = 1; j < tickets.Count-i; j++)
+                {
+                    if (tickets[j].Row < tickets[j - 1].Row)
+                    {
+                        var t = tickets[j];
+                        tickets[j] = tickets[j - 1];
+                        tickets[j - 1] = t;
+                        continue;
+                    }
+                    if(tickets[j].Row == tickets[j - 1].Row)
+                        if (tickets[j].Column < tickets[j - 1].Column)
+                        {
+                            var t = tickets[j];
+                            tickets[j] = tickets[j - 1];
+                            tickets[j - 1] = t;
+                            continue;
+                        }
+                }
+            }
         }
     }
 }

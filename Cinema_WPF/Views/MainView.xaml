@@ -171,7 +171,7 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-                <TextBlock Text="Back to films"  HorizontalAlignment="Center"  Foreground="White" FontFamily="Georgia" FontWeight="Bold" FontSize="14">
+                <TextBlock Text="Back to films"  HorizontalAlignment="Center"  Foreground="Black" FontFamily="Georgia" FontWeight="Bold" FontSize="14">
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>
@@ -274,23 +274,39 @@
             </Grid>
 
         </Grid>
-        <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,0,0,5" VerticalAlignment="Bottom" Orientation="Horizontal"
-                    HorizontalAlignment="Center" Visibility="{Binding PagingVisibility}">
-            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="First" Command="{Binding FirstPageCommand}"></Button>
-            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0"  Content="Prev" Command="{Binding PreviusPageCommand}"/>
-            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                <TextBlock Foreground="White" Margin="4,0" Text="{Binding CurrentPagePosition}"></TextBlock>
-                <TextBlock Foreground="White" Margin="4,0" Text="of"></TextBlock>
-                <TextBlock Foreground="White" Margin="4,0" Text="{Binding PageCount}"></TextBlock>
-            </StackPanel>
-            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Command="{Binding NextPageCommand}">Next</Button>
-            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="Last" Command="{Binding LastPageCommand}"/>
-        </StackPanel>
-        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding SessionVisibility}" >
+
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding SessionVisibility}" Panel.ZIndex="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="200"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Button Command="{Binding ShowFilmCommand}" Grid.Row="0" Panel.ZIndex="100" Visibility="{Binding BackToFilmVisibility}" CommandParameter="{Binding SelectedSession.Film}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#b4e4ff"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                        <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                        <Setter Property="VerticalAlignment" Value="Top"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="Button.IsMouseOver"  Value="True">
+                                <Setter Property="Background" Value="#b4e4ff" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock Text="Back to Film"  HorizontalAlignment="Center"  FontFamily="Georgia" FontWeight="Bold" FontSize="14">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="Button.IsMouseOver"  Value="True">
+                                    <Setter Property="TextDecorations" Value="UnderLine" />
+                                    <Setter Property="Foreground" Value="Black" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Button>
             <StackPanel Grid.Row="0">
                 <StackPanel Margin="15" Orientation="Vertical">
                     <TextBlock Foreground="Black" Text="Film: " HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
@@ -324,7 +340,7 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Width="80" Height="47">
 
                                 <Button Padding="4" IsEnabled="{Binding Exist}" Style="{StaticResource PlacesButtonStyle}" Panel.ZIndex="100" Visibility="{Binding Path=Ordered, Converter={StaticResource ButtonVisibilityConverter}}">
                                     
@@ -390,7 +406,18 @@
 
         </Grid>
 
-            
+        <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,0,0,5" VerticalAlignment="Bottom" Orientation="Horizontal"
+                    HorizontalAlignment="Center" Visibility="{Binding PagingVisibility}">
+            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="First" Command="{Binding FirstPageCommand}"></Button>
+            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0"  Content="Prev" Command="{Binding PreviusPageCommand}"/>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Foreground="White" Margin="4,0" Text="{Binding CurrentPagePosition}"></TextBlock>
+                <TextBlock Foreground="White" Margin="4,0" Text="of"></TextBlock>
+                <TextBlock Foreground="White" Margin="4,0" Text="{Binding PageCount}"></TextBlock>
+            </StackPanel>
+            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Command="{Binding NextPageCommand}">Next</Button>
+            <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="Last" Command="{Binding LastPageCommand}"/>
+        </StackPanel>
     </Grid>
        
 </UserControl>

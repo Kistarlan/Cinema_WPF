@@ -10,10 +10,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Cinema_WPF.Context;
 using Cinema_WPF.Helper;
 using Cinema_WPF.Models;
+using Cinema_WPF.Views;
 
 namespace Cinema_WPF.ViewModels
 {
@@ -29,6 +31,7 @@ namespace Cinema_WPF.ViewModels
         public Visibility SessionVisibility { get; set; }
         public Visibility FilmVisibility { get; set; }
         public Visibility PagingVisibility { get; set; }
+        public Visibility BackToFilmVisibility { get; private set; }
 
 
 
@@ -55,7 +58,8 @@ namespace Cinema_WPF.ViewModels
         public ICommand FirstPageCommand { get; private set; }
         public ICommand PreviusPageCommand { get; private set; }
         public ICommand SellCommand { get; private set; }
-
+        public ICommand ShowFilmCommand { get; private set; }
+        
 
 
         public MainViewViewModel()
@@ -68,6 +72,7 @@ namespace Cinema_WPF.ViewModels
             LastPageCommand = new RelayCommand(LastPage);
             ShowFilmsCommand = new RelayCommand(ShowFilms);
             SellCommand = new RelayCommand(SellTickets);
+            ShowFilmCommand = new RelayCommand<Film>(ShowFilm);
 
             FilmsVisibility = Visibility.Visible;
             PagingVisibility = Visibility.Visible;
@@ -180,6 +185,7 @@ namespace Cinema_WPF.ViewModels
 
         public void ShowFilm(Film film)
         {
+            BackToFilmVisibility = Visibility.Visible;
             SelectedFilm = film;
             var ss = new List<Session>(db.Sessions.Where(s => s.FilmId == SelectedFilm.Id));
             Film_SessionPageCount = GetList.GetSessionPages(
@@ -221,7 +227,6 @@ namespace Cinema_WPF.ViewModels
             SessionTickets = GetList.GetTickets(SelectedSession);
             SelectedTickets = new List<Ticket>();
             //Ticket.SetOrders(SelectedSession);
-            RaisePropertyChanged(() => SelectedSession);
             TicketPropertyChanged();
             VisibilityPropertyChanged();
         }
@@ -255,21 +260,35 @@ namespace Cinema_WPF.ViewModels
 
         private void TicketPropertyChanged()
         {
+            RaisePropertyChanged(() => SelectedSession);
             RaisePropertyChanged(() => SelectedPrice);
             RaisePropertyChanged(() => SelectedTickets);
             RaisePropertyChanged(() => SessionTickets);
-            RaisePropertyChanged(() => SelectedSession.Tickets);
         }
 
         private void SellTickets()
         {
+            ConfirmSell confirmSell = new ConfirmSell(SelectedTickets, SelectedPrice);
+            if(confirmSell.ShowDialog() == false)
+                return;
+            SessionTickets = null;
             db = new CinemaContext();
             for (int i = 0; i < SelectedTickets.Count; i++)
             {
+                var ticket = db.Tickets.Find(SelectedTickets[i].Id);
+                if (ticket != null)
+                {
+                    ticket.Ordered = true;
+                    ticket.Exist = false;
+                    db.Entry(ticket).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
                 SelectedTickets[i].Ordered = true;
                 SelectedTickets[i].Exist = false;
             }
             db.SaveChanges();
+            TicketPropertyChanged();
+            SessionTickets = GetList.GetTickets(SelectedSession);
             SelectedPrice = 0;
             SelectedTickets = new List<Ticket>();
             SelectedPrice = 0;
