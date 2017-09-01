@@ -34,6 +34,9 @@ namespace Cinema_WPF.ViewModels
         public Visibility PagingVisibility { get; set; }
         public Visibility BackToFilmVisibility { get; private set; }
         public Visibility BackToSessionsVisibility { get; private set; }
+        public Visibility AdminViewVisibility { get; private set; }
+        public Visibility AdminFormVisibility { get; private set; }
+        public Visibility AdminSessionsVisibility { get; private set; }
 
 
 
@@ -65,12 +68,25 @@ namespace Cinema_WPF.ViewModels
         public ICommand SellCommand { get; private set; }
         public ICommand ShowFilmCommand { get; private set; }
         public ICommand ShowSessionsCommand { get; private set; }
-        
+        public ICommand AdminViewCommand { get; private set; }
+        public ICommand ShowAdminSessionCommand { get; private set; }
+        public ICommand ShowFilmSessionCommand { get; private set; }
+
 
 
         public MainViewViewModel()
         {
             db = new CinemaContext();
+            LoadWindow();
+            Film_SessionsCollection = null;
+            FilmsCollection = null;
+            FilmPageCount = GetList.GetFilmPages(db.Films, FilmPageSize);
+            SelectedTickets = null;
+            ChangeFilmsCollection();
+        }
+
+        public void LoadWindow()
+        {
             LogoutCommand = new RelayCommand(Logout);
             NextPageCommand = new RelayCommand(NextPage);
             PreviusPageCommand = new RelayCommand(PreviusPage);
@@ -80,18 +96,35 @@ namespace Cinema_WPF.ViewModels
             SellCommand = new RelayCommand(SellTickets);
             ShowFilmCommand = new RelayCommand<Film>(ShowFilm);
             ShowSessionsCommand = new RelayCommand(ShowSessions);
+            AdminViewCommand = new RelayCommand(ShowAdminView);
+            ShowAdminSessionCommand = new RelayCommand(ShowAdminSessions);
+            ShowFilmSessionCommand = new RelayCommand(ShowAdminFilms);
             FilmsVisibility = Visibility.Visible;
             PagingVisibility = Visibility.Visible;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
             BackToSessionsVisibility = Visibility.Hidden;
-            Film_SessionsCollection = null;
-            FilmsCollection = null;
-            FilmPageCount = GetList.GetFilmPages(db.Films, FilmPageSize);
-            SelectedTickets = null;
-            ChangeFilmsCollection();
+            AdminFormVisibility = Visibility.Hidden;
+            if (User != null)
+            {
+                int id = db.UserRoles.FirstOrDefault(i => i.Name.ToLower() == "admin").Id;
+                if (User.UserRoleId == id)
+                {
+                    
+                AdminViewVisibility = Visibility.Visible;
+                RaisePropertyChanged(() => AdminViewVisibility);
+                }
+                else
+                {
+                    AdminViewVisibility = Visibility.Hidden;
+                    RaisePropertyChanged(() => AdminViewVisibility);
+                }
+            }
         }
+
+
+
 
         private void NextPage()
         {
@@ -121,7 +154,7 @@ namespace Cinema_WPF.ViewModels
             {
                 if (CurrentFilmsPosition != 1)
                     CurrentFilmsPosition--;
-                ChangeFilm_SessionCollection();
+                ChangeFilmsCollection();
             }
             if (FilmVisibility == Visibility.Visible)
             {
@@ -235,6 +268,7 @@ namespace Cinema_WPF.ViewModels
             FilmsVisibility = Visibility.Hidden;
             FilmVisibility = Visibility.Visible;
             SessionVisibility = Visibility.Hidden;
+            AdminFormVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
             ChangeFilm_SessionCollection();
             RaisePropertyChanged(() => SelectedFilm);
@@ -249,6 +283,7 @@ namespace Cinema_WPF.ViewModels
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Visible;
+            AdminFormVisibility = Visibility.Hidden;
             SessionPageCount = GetList.GetSessionPages(new List<Session>(db.Sessions), SessionPageSize);
             CurrentSessionPosition = 1;
             Change_SessionCollection();
@@ -256,12 +291,25 @@ namespace Cinema_WPF.ViewModels
             //SessionCollection
 
         }
+
+        private void ShowAdminView()
+        {
+            BackToSessionsVisibility = Visibility.Hidden;
+            BackToFilmVisibility = Visibility.Hidden;
+            FilmsVisibility = Visibility.Hidden;
+            FilmVisibility = Visibility.Hidden;
+            SessionVisibility = Visibility.Hidden;
+            SessionsVisibility = Visibility.Hidden;
+            AdminFormVisibility = Visibility.Visible;
+            VisibilityPropertyChanged();
+        }
         public void ShowFilms()
         {
             CurrentFilm_SessionPosition = 1;
             FilmsVisibility = Visibility.Visible;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
+            AdminFormVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
             ChangeFilmsCollection();
             //RaisePropertyChanged(() => SelectedFilm);
@@ -276,6 +324,7 @@ namespace Cinema_WPF.ViewModels
             RaisePropertyChanged(() => SessionVisibility);
             RaisePropertyChanged(() => BackToFilmVisibility);
             RaisePropertyChanged(() => BackToSessionsVisibility);
+            RaisePropertyChanged(() => AdminFormVisibility);
         }
 
 
@@ -284,6 +333,7 @@ namespace Cinema_WPF.ViewModels
             FilmsVisibility = Visibility.Hidden;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Visible;
+            AdminFormVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
             SelectedSession = session;
             SessionTickets = GetList.GetTickets(SelectedSession);
@@ -355,6 +405,41 @@ namespace Cinema_WPF.ViewModels
             SelectedTickets = new List<Ticket>();
             SelectedPrice = 0;
             TicketPropertyChanged();
+        }
+
+        public void ShowAdminSessions()
+        {
+            BackToFilmVisibility = Visibility.Hidden;
+            FilmsVisibility = Visibility.Hidden;
+            FilmVisibility = Visibility.Hidden;
+            SessionVisibility = Visibility.Hidden;
+            SessionsVisibility = Visibility.Visible;
+            AdminFormVisibility = Visibility.Visible;
+            SessionPageCount = GetList.GetSessionPages(new List<Session>(db.Sessions), SessionPageSize);
+            CurrentSessionPosition = 1;
+            Change_SessionCollection();
+            VisibilityPropertyChanged();
+        }
+        private void ShowAdminFilms()
+        {
+            CurrentFilm_SessionPosition = 1;
+            FilmsVisibility = Visibility.Visible;
+            FilmVisibility = Visibility.Hidden;
+            SessionVisibility = Visibility.Hidden;
+            SessionsVisibility = Visibility.Hidden;
+            AdminFormVisibility = Visibility.Visible;
+            ChangeFilmsCollection();
+            //RaisePropertyChanged(() => SelectedFilm);
+            VisibilityPropertyChanged();
+        }
+        public void Select_Film(Film film)
+        {
+            SelectedFilm = film;
+        }
+
+        public void Select_Session(Session session)
+        {
+            SelectedSession = session;
         }
     }
 }

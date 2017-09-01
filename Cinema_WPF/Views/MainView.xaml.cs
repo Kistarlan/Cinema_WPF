@@ -25,8 +25,15 @@ namespace Cinema_WPF.Views
     {
         public MainView()
         {
-            //DataContext = new MainViewViewModel();
+            DataContext = new MainViewViewModel();
             InitializeComponent();
+            AdminView = new AdminView();
+            AdminView.DataContext = this.DataContext;
+        }
+
+        public void Load()
+        {
+            (DataContext as MainViewViewModel).LoadWindow();
         }
 
         private void ListViewItem_MouseClick(object sender, MouseButtonEventArgs e)
@@ -57,15 +64,6 @@ namespace Cinema_WPF.Views
                 else
                     (this.DataContext as MainViewViewModel).RemoveTicketFromCart(ticket);
             }
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-           ToggleButton tbutton = sender as ToggleButton;
-            if (tbutton.IsChecked == true)
-                tbutton.IsChecked = false;
-            else
-                tbutton.IsChecked = true;
         }
     }
 }

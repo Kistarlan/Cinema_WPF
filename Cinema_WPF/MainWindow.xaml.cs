@@ -109,16 +109,18 @@ namespace Cinema_WPF
             loginviewmodel = LoginView.DataContext as LoginViewModel;
             if (loginviewmodel != null)
                 loginviewmodel.ParentMainWindowViewModel = this.DataContext as MainWindowViewModel;
-            MainViewViewModel = MainView.DataContext as MainViewViewModel;
-            if (MainViewViewModel != null)
-                MainViewViewModel.ParentMainWindowViewModel = this.DataContext as MainWindowViewModel;
+
 
             ShowMainView(dbContext.Users.FirstOrDefault(i => i.Login.ToLower() == "Admin"));
         }
 
         public void ShowMainView(User user)
         {
+            MainViewViewModel = MainView.DataContext as MainViewViewModel;
+            if (MainViewViewModel != null)
+                MainViewViewModel.ParentMainWindowViewModel = this.DataContext as MainWindowViewModel;
             MainViewViewModel.User = user;
+            MainView.Load();
             MainViewViewModel.Show();
             MainView.Visibility = Visibility.Visible;
             LoginView.Visibility = Visibility.Hidden;

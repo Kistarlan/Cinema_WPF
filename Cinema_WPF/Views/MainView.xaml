@@ -8,7 +8,9 @@
              xmlns:converters="clr-namespace:Cinema_WPF.Converters"
              mc:Ignorable="d" 
              FontFamily="Georgia"
-             d:DesignHeight="300" d:DesignWidth="800">
+             d:DesignHeight="300" 
+             d:DesignWidth="800"
+             >
     <UserControl.DataContext>
         <viewModel:MainViewViewModel></viewModel:MainViewViewModel>
     </UserControl.DataContext>
@@ -67,8 +69,26 @@
                 </Style>
             </Button.Style>
         </Button>
+        <Button Command="{Binding AdminViewCommand}" Grid.Column="0" Grid.Row="2" Visibility="{Binding AdminViewVisibility}">
+            <TextBlock Text="Admin View" Foreground="White" FontFamily="Georgia" FontWeight="Bold" FontSize="28">
+
+            </TextBlock>
+
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#41b1e1"></Setter>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="Button.IsMouseOver"  Value="True">
+                            <Setter Property="Background" Value="#7bceee" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
         <Line Grid.Column="0"  Grid.Row="1" Panel.ZIndex="2" Grid.ColumnSpan="2" Stroke="White" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Y2="0" StrokeThickness="2"></Line>
         <Line Grid.Column="0" Grid.Row="2" Panel.ZIndex="2" Stroke="White" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Y2="0" StrokeThickness="2"></Line>
+        <Line Grid.Column="0" Grid.Row="3" Panel.ZIndex="2" Stroke="White" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Y2="0" StrokeThickness="2" Visibility="{Binding AdminViewVisibility}"></Line>
         <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Width="70" Orientation="Vertical">
             <TextBlock Text="{Binding User.Name}" FontFamily="Georgia" FontWeight="Bold" FontSize="14"  HorizontalAlignment="Center"  Foreground="White"></TextBlock>
             <Button Command="{Binding LogoutCommand}">
@@ -230,7 +250,6 @@
             </StackPanel>
             <TextBlock Grid.Row="1" Foreground="Black" Text="Sessions" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
             <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="5, 35, 5, 0" Height="Auto">
-                    <!--Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=Height}"-->
                 <ListView x:Name="FilmSessionList" Background="#b4e4ff" Margin="10, 10, 10, 50" BorderThickness="0" 
                           ItemsSource="{Binding Film_SessionsCollection}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
                           VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility ="Disabled"
@@ -476,6 +495,9 @@
             <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Command="{Binding NextPageCommand}">Next</Button>
             <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="Last" Command="{Binding LastPageCommand}"/>
         </StackPanel>
+        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" Background="#b4e4ff" Visibility="{Binding AdminFormVisibility}">
+            <local:AdminView x:Name="AdminView"/>
+        </Grid>
     </Grid>
-       
+    
 </UserControl>
