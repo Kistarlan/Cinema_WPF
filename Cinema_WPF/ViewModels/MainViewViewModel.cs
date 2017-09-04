@@ -26,6 +26,7 @@ namespace Cinema_WPF.ViewModels
         public ObservableCollection<Session> Film_SessionsCollection { get; private set; }
         public ObservableCollection<Ticket> SessionTickets { get; private set; }
         public ObservableCollection<Session> SessionCollection { get; private set; }
+        public ObservableCollection<Director> DirectorCollection { get; private set; }
 
         public Visibility FilmsVisibility { get; set; }
         public Visibility SessionsVisibility { get; set; }
@@ -36,7 +37,8 @@ namespace Cinema_WPF.ViewModels
         public Visibility BackToSessionsVisibility { get; private set; }
         public Visibility AdminViewVisibility { get; private set; }
         public Visibility AdminFormVisibility { get; private set; }
-        public Visibility AdminSessionsVisibility { get; private set; }
+        //public Visibility AdminSessionsVisibility { get; private set; }
+        public Visibility AdminDerectorsVisibility { get; private set; }
 
 
 
@@ -47,13 +49,17 @@ namespace Cinema_WPF.ViewModels
         public User User { get; set; }
         public Film SelectedFilm { get; private set; }
         public Session SelectedSession { get; private set; }
+        public Director SelectedDirector { get; private set; }
         public int FilmPageCount { get; set; }
         public int Film_SessionPageCount { get; set; }
         public int SessionPageCount { get; set; }
+        public int DirectorPageCount { get; set; }
         public int FilmPageSize { get; set; } = 5;
+        public int DirectorPageSize { get; set; } = 5;
         public int Film_SessionPageSize { get; set; } = 10;
         public int SessionPageSize { get; set; } = 10;
         public int CurrentFilmsPosition { get; set; } = 1;
+        public int CurrentDirectorPosition { get; set; } = 1;
         public int CurrentFilm_SessionPosition { get; set; } = 1;
         public int CurrentSessionPosition { get; set; } = 1;
         public int CurrentPagePosition { get; set; }
@@ -69,8 +75,9 @@ namespace Cinema_WPF.ViewModels
         public ICommand ShowFilmCommand { get; private set; }
         public ICommand ShowSessionsCommand { get; private set; }
         public ICommand AdminViewCommand { get; private set; }
-        public ICommand ShowAdminSessionCommand { get; private set; }
-        public ICommand ShowFilmSessionCommand { get; private set; }
+        public ICommand ShowAdminSessionsCommand { get; private set; }
+        public ICommand ShowAdminFilmsCommand { get; private set; }
+        public ICommand ShowAdminDerectorsCommand { get; private set; }
 
 
 
@@ -97,13 +104,15 @@ namespace Cinema_WPF.ViewModels
             ShowFilmCommand = new RelayCommand<Film>(ShowFilm);
             ShowSessionsCommand = new RelayCommand(ShowSessions);
             AdminViewCommand = new RelayCommand(ShowAdminView);
-            ShowAdminSessionCommand = new RelayCommand(ShowAdminSessions);
-            ShowFilmSessionCommand = new RelayCommand(ShowAdminFilms);
+            ShowAdminSessionsCommand = new RelayCommand(ShowAdminSessions);
+            ShowAdminFilmsCommand = new RelayCommand(ShowAdminFilms);
+            ShowAdminDerectorsCommand = new RelayCommand(ShowAdminDirectors);
             FilmsVisibility = Visibility.Visible;
             PagingVisibility = Visibility.Visible;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
+            AdminDerectorsVisibility = Visibility.Hidden;
             BackToSessionsVisibility = Visibility.Hidden;
             AdminFormVisibility = Visibility.Hidden;
             if (User != null)
@@ -146,6 +155,12 @@ namespace Cinema_WPF.ViewModels
                     CurrentSessionPosition++;
                 Change_SessionCollection();
             }
+            if (AdminDerectorsVisibility == Visibility.Visible)
+            {
+                if (CurrentDirectorPosition != DirectorPageCount)
+                    CurrentDirectorPosition++;
+                Change_DirectorCollection();
+            }
         }
 
         private void PreviusPage()
@@ -168,6 +183,12 @@ namespace Cinema_WPF.ViewModels
                     CurrentSessionPosition--;
                 Change_SessionCollection();
             }
+            if (AdminDerectorsVisibility == Visibility.Visible)
+            {
+                if (CurrentDirectorPosition != 1)
+                    CurrentDirectorPosition--;
+                Change_DirectorCollection();
+            }
         }
         private void FirstPage()
         {
@@ -189,6 +210,12 @@ namespace Cinema_WPF.ViewModels
                     CurrentSessionPosition = 1;
                 Change_SessionCollection();
             }
+            if (AdminDerectorsVisibility == Visibility.Visible)
+            {
+                if (CurrentDirectorPosition != 1)
+                    CurrentDirectorPosition = 1;
+                Change_DirectorCollection();
+            }
         }
         private void LastPage()
         {
@@ -209,6 +236,12 @@ namespace Cinema_WPF.ViewModels
                 if (CurrentSessionPosition != SessionPageCount)
                     CurrentSessionPosition = SessionPageCount;
                 Change_SessionCollection();
+            }
+            if (AdminDerectorsVisibility == Visibility.Visible)
+            {
+                if (CurrentDirectorPosition != DirectorPageCount)
+                    CurrentDirectorPosition = DirectorPageCount;
+                Change_DirectorCollection();
             }
         }
 
@@ -236,6 +269,14 @@ namespace Cinema_WPF.ViewModels
             PageCount = SessionPageCount;
             SessionCollection = GetList.Get_Sessions(new List<Session>(db.Sessions), (CurrentSessionPosition - 1) * SessionPageSize, SessionPageSize);
             RaisePropertyChanged(() => SessionCollection);
+            ChangePaging();
+        }
+        private void Change_DirectorCollection()
+        {
+            CurrentPagePosition = CurrentDirectorPosition;
+            PageCount = DirectorPageCount;
+            DirectorCollection = GetList.GetDirectors(db.Directors, (CurrentDirectorPosition - 1) * DirectorPageSize, DirectorPageSize);
+            RaisePropertyChanged(() => DirectorCollection);
             ChangePaging();
         }
 
@@ -269,6 +310,7 @@ namespace Cinema_WPF.ViewModels
             FilmVisibility = Visibility.Visible;
             SessionVisibility = Visibility.Hidden;
             AdminFormVisibility = Visibility.Hidden;
+            AdminDerectorsVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
             ChangeFilm_SessionCollection();
             RaisePropertyChanged(() => SelectedFilm);
@@ -278,6 +320,7 @@ namespace Cinema_WPF.ViewModels
         private void ShowSessions()
         {
             BackToSessionsVisibility = Visibility.Visible;
+            AdminDerectorsVisibility = Visibility.Hidden;
             BackToFilmVisibility = Visibility.Hidden;
             FilmsVisibility = Visibility.Hidden;
             FilmVisibility = Visibility.Hidden;
@@ -295,6 +338,7 @@ namespace Cinema_WPF.ViewModels
         private void ShowAdminView()
         {
             BackToSessionsVisibility = Visibility.Hidden;
+            AdminDerectorsVisibility = Visibility.Hidden;
             BackToFilmVisibility = Visibility.Hidden;
             FilmsVisibility = Visibility.Hidden;
             FilmVisibility = Visibility.Hidden;
@@ -310,6 +354,7 @@ namespace Cinema_WPF.ViewModels
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
             AdminFormVisibility = Visibility.Hidden;
+            AdminDerectorsVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
             ChangeFilmsCollection();
             //RaisePropertyChanged(() => SelectedFilm);
@@ -333,6 +378,7 @@ namespace Cinema_WPF.ViewModels
             FilmsVisibility = Visibility.Hidden;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Visible;
+            AdminDerectorsVisibility = Visibility.Hidden;
             AdminFormVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
             SelectedSession = session;
@@ -413,6 +459,7 @@ namespace Cinema_WPF.ViewModels
             FilmsVisibility = Visibility.Hidden;
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
+            AdminDerectorsVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Visible;
             AdminFormVisibility = Visibility.Visible;
             SessionPageCount = GetList.GetSessionPages(new List<Session>(db.Sessions), SessionPageSize);
@@ -427,11 +474,28 @@ namespace Cinema_WPF.ViewModels
             FilmVisibility = Visibility.Hidden;
             SessionVisibility = Visibility.Hidden;
             SessionsVisibility = Visibility.Hidden;
+            AdminDerectorsVisibility = Visibility.Hidden;
             AdminFormVisibility = Visibility.Visible;
             ChangeFilmsCollection();
             //RaisePropertyChanged(() => SelectedFilm);
             VisibilityPropertyChanged();
         }
+
+        private void ShowAdminDirectors()
+        {
+            CurrentDirectorPosition = 1;
+            FilmsVisibility = Visibility.Hidden;
+            FilmVisibility = Visibility.Hidden;
+            SessionVisibility = Visibility.Hidden;
+            SessionsVisibility = Visibility.Hidden;
+            AdminDerectorsVisibility = Visibility.Visible;
+            AdminFormVisibility = Visibility.Visible;
+            DirectorPageCount = GetList.GetDirectorPages(db.Directors, DirectorPageSize);
+            Change_DirectorCollection();
+            //RaisePropertyChanged(() => SelectedFilm);
+            VisibilityPropertyChanged();
+        }
+
         public void Select_Film(Film film)
         {
             SelectedFilm = film;
@@ -440,6 +504,11 @@ namespace Cinema_WPF.ViewModels
         public void Select_Session(Session session)
         {
             SelectedSession = session;
+        }
+
+        public void Select_Director(Director director)
+        {
+            SelectedDirector = director;
         }
     }
 }

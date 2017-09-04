@@ -35,6 +35,29 @@ namespace Cinema_WPF.Helper
             }
         }
 
+        public static ObservableCollection<Director> GetDirectors(DbSet<Director> directors, int start, int size)
+        {
+            ObservableCollection<Director> rezult = new ObservableCollection<Director>();
+            List<Director> Directors = directors.ToList();
+            int count = Directors.Count();
+            if (size < count - start)
+            {
+                for (int i = start; i < start + size; i++)
+                {
+                    rezult.Add(Directors[i]);
+                }
+                return rezult;
+            }
+            else
+            {
+                for (int i = start; i < count; i++)
+                {
+                    rezult.Add(Directors[i]);
+                }
+                return rezult;
+            }
+        }
+
         public static ObservableCollection<Session> Get_Sessions(List<Session> sessions, int start, int size)
         {
 
@@ -84,6 +107,17 @@ namespace Cinema_WPF.Helper
                 return films.Count()/size;
             else
                 return films.Count()/size + 1;
+        }
+
+        public static int GetDirectorPages(DbSet<Director> directors, int size)
+        {
+            int remainder = directors.Count() % size;
+            if (directors.Count() / size == 0)
+                return 1;
+            if (remainder == 0)
+                return directors.Count() / size;
+            else
+                return directors.Count() / size + 1;
         }
 
         public static int GetSessionPages(List<Session> sessions, int size)

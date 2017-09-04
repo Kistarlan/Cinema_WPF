@@ -33,7 +33,7 @@
                     <Grid Style="{StaticResource TabItemGridStyle}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <command:EventToCommand Command="{Binding ShowFilmSessionCommand}"
+                                <command:EventToCommand Command="{Binding ShowAdminFilmsCommand}"
                                                         PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -103,17 +103,89 @@
             <TabItem Name="DirectorsItem">
                 <TabItem.Header>
                     <Grid Style="{StaticResource TabItemGridStyle}">
-
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseUp">
+                                <command:EventToCommand Command="{Binding ShowAdminDerectorsCommand}"
+                                                        PassEventArgsToCommand="True" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <TextBlock Text ="Directors" Style="{StaticResource TabItemHeaderText}"/>
                     </Grid>
                 </TabItem.Header>
+                <TabItem.Content>
+                    <Grid Background="#c4f1ff">
+                        <ListView x:Name="DirectorsList" Background="#c4f1ff" Margin="10, 10, 10, 50" BorderThickness="0" 
+                                  ItemsSource="{Binding DirectorCollection}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
+
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="1" HorizontalAlignment="Left"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="SelectDirector_MouseClick" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
+                                        <StackPanel>
+                                            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                                <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                                <TextBlock Text="  " HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                                <TextBlock Foreground="Black" Text="{Binding Surname}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                            </StackPanel>
+                                            <TextBlock Text="  " HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                                <TextBlock Text="Date of birth: " FontWeight="Bold" Foreground="Black" FontSize="16"></TextBlock>
+                                                <TextBlock Foreground="Black" Text="{Binding DateOfBirth}" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="16"/>
+                                            </StackPanel>
+                                            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                                <TextBlock Text="Films: " FontWeight="Bold" TextDecorations="UnderLine" Foreground="Black" FontSize="16"></TextBlock>
+                                                <ListView x:Name="FilmsList" Background="#c4f1ff" Margin="10, 10, 10, 80" BorderThickness="0" 
+                                                          ItemsSource="{Binding Films}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                                                          VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
+
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <UniformGrid Columns="1" HorizontalAlignment="Left"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="SelectFilm_MouseClick" />
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
+                                                                    <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="18"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                    </Grid>
+                </TabItem.Content>
             </TabItem>
             <TabItem Name="SessionsItem">
                 <TabItem.Header>
                     <Grid Style="{StaticResource TabItemGridStyle}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseUp">
-                                <command:EventToCommand Command="{Binding ShowAdminSessionCommand}"
+                                <command:EventToCommand Command="{Binding ShowAdminSessionsCommand}"
                                                         PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -179,6 +251,12 @@
             <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Command="{Binding NextPageCommand}">Next</Button>
             <Button Width="45" Height="20" Style="{StaticResource ListViewButtonStyle}" Margin="4,0" Content="Last" Command="{Binding LastPageCommand}"/>
         </StackPanel>
+        <UniformGrid Margin="0,0,0,10" VerticalAlignment="Bottom" 
+                    HorizontalAlignment="Center" Visibility="{Binding PagingVisibility}" Columns="3">
+            <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Change" Command="{Binding FirstPageCommand}"></Button>
+            <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0"  Content="Add" Command="{Binding PreviusPageCommand}"/>
+            <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Delete" Command="{Binding LastPageCommand}"/>
+        </UniformGrid>
     </Grid>
 </UserControl>
 

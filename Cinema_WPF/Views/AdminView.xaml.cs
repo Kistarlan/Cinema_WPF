@@ -42,5 +42,13 @@ namespace Cinema_WPF.Views
 
             datacontext.Select_Session(session);
         }
+
+        private void SelectDirector_MouseClick(object sender, MouseButtonEventArgs e)
+        {
+            var datacontext = this.DataContext as MainViewViewModel;
+            Director director = (sender as ListViewItem).Content as Director;
+
+            datacontext.Select_Director(director);
+        }
     }
 }
