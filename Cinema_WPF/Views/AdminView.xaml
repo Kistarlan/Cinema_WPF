@@ -8,10 +8,11 @@
              xmlns:viewModel="clr-namespace:Cinema_WPF.ViewModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:command="http://www.galasoft.ch/mvvmlight"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 
              mc:Ignorable="d" 
-             d:DesignHeight="300" 
-             d:DesignWidth="300"
+             d:DesignHeight="1000"
+             d:DesignWidth="1000"
              FontFamily="Georgia"
              >
     
@@ -20,13 +21,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles/ButtonStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters:WidthConverter x:Key="WidthConverter"></converters:WidthConverter>
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
         <viewModel:MainViewViewModel></viewModel:MainViewViewModel>
     </UserControl.DataContext>
 
-    <Grid Background="#b4e4ff">
+    <Grid Background="#b4e4ff" Margin="0,-2,0,2">
+        <Grid Background="#b4e4ff">
         <TabControl Background="#c4f1ff">
             <TabItem Name="FilmsItem">
                 <TabItem.Header>
@@ -146,7 +149,7 @@
                                             </StackPanel>
                                             <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
                                                 <TextBlock Text="Films: " FontWeight="Bold" TextDecorations="UnderLine" Foreground="Black" FontSize="16"></TextBlock>
-                                                <ListView x:Name="FilmsList" Background="#c4f1ff" Margin="10, 10, 10, 80" BorderThickness="0" 
+                                                <ListBox x:Name="FilmsList" Background="#c4f1ff" Margin="10, 10, 10, 80" BorderThickness="0" 
                                                           ItemsSource="{Binding Films}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
                                                           VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
 
@@ -155,21 +158,21 @@
                                                             <UniformGrid Columns="1" HorizontalAlignment="Left"/>
                                                         </ItemsPanelTemplate>
                                                     </ItemsControl.ItemsPanel>
-                                                    <ListView.ItemContainerStyle>
-                                                        <Style TargetType="ListViewItem">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
                                                             <Setter Property="VerticalContentAlignment" Value="Top"/>
-                                                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="SelectFilm_MouseClick" />
+                                                            <!--<EventSetter Event="PreviewMouseLeftButtonDown" Handler="SelectFilm_MouseClick" />-->
                                                         </Style>
-                                                    </ListView.ItemContainerStyle>
+                                                    </ListBox.ItemContainerStyle>
 
-                                                    <ListView.ItemTemplate>
+                                                    <ListBox.ItemTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
                                                                     <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="18"/>
                                                             </StackPanel>
                                                         </DataTemplate>
-                                                    </ListView.ItemTemplate>
-                                                </ListView>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
@@ -253,10 +256,320 @@
         </StackPanel>
         <UniformGrid Margin="0,0,0,10" VerticalAlignment="Bottom" 
                     HorizontalAlignment="Center" Visibility="{Binding PagingVisibility}" Columns="3">
-            <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Change" Command="{Binding FirstPageCommand}"></Button>
-            <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0"  Content="Add" Command="{Binding PreviusPageCommand}"/>
-            <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Delete" Command="{Binding LastPageCommand}"/>
+            <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Change" Command="{Binding ChangeCommand}"></Button>
+                <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0"  Content="Add" Command="{Binding AddCommand}"/>
+            <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Delete" Command="{Binding RemoveConfirmCommand}"/>
         </UniformGrid>
+        
+        </Grid >
+        <Grid Background="#b4e4ff" Visibility="{Binding FilmChangesVisibility}">
+            <StackPanel Orientation="Vertical" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Converter={StaticResource WidthConverter}, ConverterParameter = 100 , Path=ActualWidth}">
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Name: " HorizontalAlignment="Center" Width="250" VerticalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <TextBox Text="{Binding Film_Name}" Width="150" controls:TextBoxHelper.Watermark="Enter film name" controls:TextBoxHelper.ClearTextButton="True"  TextWrapping="Wrap"  VerticalAlignment="Top" />
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Release year of the movie: " FontSize="17" Width="250" VerticalAlignment="Center" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <TextBox Margin="2,5" MaxLength="4" Width="150" Text="{Binding Path=Film_Year, Mode=TwoWay}" controls:TextBoxHelper.Watermark="Enter release year"  PreviewTextInput="NumberValidationTextBox"/>
+                    <TextBlock Text="Incorrect year!" VerticalAlignment="Center" Foreground="Red" Visibility="{Binding IncorrectYearVisibility}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Description: " Width="250" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <TextBox Text="{Binding Film_Description}" controls:TextBoxHelper.Watermark="Enter film name" Height="150" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}}, Converter={StaticResource WidthConverter}, ConverterParameter = 300 , Path=ActualWidth}" controls:TextBoxHelper.ClearTextButton="True" TextWrapping="Wrap"  VerticalAlignment="Top" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Directors: " Width="250" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <ComboBox Height="50" Width="300" ItemsSource="{Binding Directors}" VerticalAlignment="Top">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="AddDirectorToFilm_MouseClick" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                                        <TextBlock Text="  " HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                                        <TextBlock Foreground="Black" Text="{Binding Surname}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <StackPanel Orientation="Vertical">
+
+                        <Grid Background="#b4e4ff" >
+                            <ListBox x:Name="FilmDirectorsList" Background="#b4e4ff"  BorderThickness="0" Margin="10, 40, 10, 50"
+                                      ItemsSource="{Binding CurrentDirectors}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                                      ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
+
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="1" HorizontalAlignment="Left"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="RemoveDirectorFromFilm_MouseClick" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid >
+                                            <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
+                                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                                    <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                                    <TextBlock Text="  " HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                                    <TextBlock Foreground="Black" Text="{Binding Surname}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Genres: " Width="250" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <ComboBox Height="50" Width="300" ItemsSource="{Binding Genres}" VerticalAlignment="Top">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="AddGenreToFilm_MouseClick" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <StackPanel Orientation="Vertical">
+
+                        <Grid Background="#b4e4ff" >
+                            <ListBox x:Name="FilmGenresList" Background="#b4e4ff"  BorderThickness="0" Margin="10, 40, 10, 50"
+                                      ItemsSource="{Binding CurrentGenres}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                                      ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
+
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="1" HorizontalAlignment="Left"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="RemoveGenreFromFilm_MouseClick" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid >
+                                            <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
+                                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                                    <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <UniformGrid Margin="0,0,0,10" VerticalAlignment="Bottom" 
+                         HorizontalAlignment="Center" Columns="3">
+                <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Add" Visibility="{Binding AddButtonVisibility}" Command="{Binding AddFilmCommand}"></Button>
+                <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0"  Content="Change" Visibility="{Binding ChangeButtonVisibility}" Command="{Binding ChangeFilmCommand}"/>
+                <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Cancel" Command="{Binding ShowAdminFilmsCommand}"/>
+            </UniformGrid>
+        </Grid>
+
+        <Grid Background="#b4e4ff" Visibility="{Binding DirectorChangesVisibility}">
+            <StackPanel Orientation="Vertical" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Converter={StaticResource WidthConverter}, ConverterParameter = 100 , Path=ActualWidth}">
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Name: " HorizontalAlignment="Center" Width="250" VerticalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <TextBox Text="{Binding Director_Name}" Width="150" controls:TextBoxHelper.Watermark="Enter film name" controls:TextBoxHelper.ClearTextButton="True"  TextWrapping="Wrap"  VerticalAlignment="Top" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Surname: " HorizontalAlignment="Center" Width="250" VerticalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <TextBox Text="{Binding Director_Surname}" Width="150" controls:TextBoxHelper.Watermark="Enter film name" controls:TextBoxHelper.ClearTextButton="True"  TextWrapping="Wrap"  VerticalAlignment="Top" />
+                </StackPanel>
+
+
+                <TextBlock Text="Date of birth" FontSize="14" FontWeight="Bold" Foreground="Black" Margin="0,20,0,0"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="2,5" Width="45" Text="Day" Foreground="Black"/>
+                    <TextBlock Margin="2,5" Width="45" Text="Mounth" Foreground="Black"/>
+                    <TextBlock Margin="2,5" Width="45" Text="Year" Foreground="Black"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Margin="2,5" MaxLength="2" Width="45" Text="{Binding Path=Director_Day, Mode=TwoWay}"  PreviewTextInput="NumberValidationTextBox"/>
+                    <TextBox Margin="2,5" MaxLength="2" Width="45" Text="{Binding Path=Director_Mounth, Mode=TwoWay}"  PreviewTextInput="NumberValidationTextBox"/>
+                    <TextBox Margin="2,5" MaxLength="4" Width="45" Text="{Binding Path=Director_Year, Mode=TwoWay}"  PreviewTextInput="NumberValidationTextBox"/>
+                </StackPanel>
+                <TextBlock Text="Incorrect date" Foreground="Red" Visibility="{Binding CalendarErrorVisibility}"></TextBlock>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Films: " Width="250" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <ComboBox Height="50" Width="300" ItemsSource="{Binding Films}" VerticalAlignment="Top">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="AddFilmToDirector_MouseClick" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <StackPanel Orientation="Vertical">
+
+                        <Grid Background="#b4e4ff" >
+                            <ListBox x:Name="DirectorFilmList" Background="#b4e4ff"  BorderThickness="0" Margin="10, 40, 10, 50"
+                                      ItemsSource="{Binding CurrentFilms}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                                      ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
+
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="1" HorizontalAlignment="Left"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="RemoveFilmFromDirector_MouseClick" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid >
+                                            <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=ActualWidth}" Margin="0, 20, 0, 20" >
+                                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                                    <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="24"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+
+                    </StackPanel>
+                </StackPanel>
+
+
+            </StackPanel>
+                <UniformGrid Margin="0,0,0,10" VerticalAlignment="Bottom" 
+                         HorizontalAlignment="Center" Columns="3">
+                    <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Add" Visibility="{Binding AddButtonVisibility}" Command="{Binding AddDirectorCommand}"></Button>
+                    <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0"  Content="Change" Visibility="{Binding ChangeButtonVisibility}" Command="{Binding ChangeDirectorCommand}"/>
+                    <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Cancel" Command="{Binding ShowAdminDerectorsCommand}"/>
+                </UniformGrid>
+        </Grid>
+
+        <Grid Background="#b4e4ff" Visibility="{Binding SessionChangesVisibility}" >
+            <StackPanel Orientation="Vertical" Margin="10" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Converter={StaticResource WidthConverter}, ConverterParameter = 100 , Path=ActualWidth}">
+
+                <TextBlock Text="Date and time:" FontSize="14" FontWeight="Bold" Foreground="Black" Margin="0,20,0,0"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="2,5" Width="45" Text="Year" Foreground="Black"/>
+                    <TextBlock Margin="2,5" Width="45" Text="Mounth" Foreground="Black"/>
+                    <TextBlock Margin="2,5" Width="45" Text="Day" Foreground="Black"/>
+                    <TextBlock Margin="2,5" Width="45" Text="Hour" Foreground="Black"/>
+                    <TextBlock Margin="2,5" Width="45" Text="Minute" Foreground="Black"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Margin="2,5" MaxLength="4" Width="45" Text="{Binding Path=Session_Year, Mode=TwoWay}"  PreviewTextInput="NumberValidationTextBox"/>
+                    <TextBox Margin="2,5" MaxLength="2" Width="45" Text="{Binding Path=Session_Mounth, Mode=TwoWay}"  PreviewTextInput="NumberValidationTextBox"/>
+                    <TextBox Margin="2,5" MaxLength="2" Width="45" Text="{Binding Path=Session_Day, Mode=TwoWay}"  PreviewTextInput="NumberValidationTextBox"/>
+                    <TextBox Margin="2,5" MaxLength="2" Width="45" Text="{Binding Path=Session_Hour, Mode=TwoWay}"  PreviewTextInput="NumberValidationTextBox"/>
+                    <TextBox Margin="2,5" MaxLength="2" Width="45" Text="{Binding Path=Session_Minute, Mode=TwoWay}"  PreviewTextInput="NumberValidationTextBox"/>
+                </StackPanel>
+                <TextBlock Text="Incorrect date or time" Foreground="Red" Visibility="{Binding CalendarErrorVisibility}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Price: " HorizontalAlignment="Center" Width="250" VerticalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <TextBox Text="{Binding Session_Price}" Width="150" controls:TextBoxHelper.Watermark="Enter film name" controls:TextBoxHelper.ClearTextButton="True"  TextWrapping="Wrap"  VerticalAlignment="Top" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Film: " Width="250" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <ComboBox Height="50" Width="300" ItemsSource="{Binding Films}" SelectedItem="{Binding Session_Film}" VerticalAlignment="Top">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="SelectFilmToSession_MouseClick" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Foreground="Black" Text="{Binding Name}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Hall: " Width="250" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Foreground="Black" Margin="0,5"></TextBlock>
+                    <ComboBox Height="50" Width="300" ItemsSource="{Binding Halls}" SelectedItem="{Binding Session_Hall}" VerticalAlignment="Top">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="SelectFilmToSession_MouseClick" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Foreground="Black" Text="{Binding Number}" HorizontalAlignment="Stretch" FontWeight="Bold" TextWrapping="Wrap" FontSize="20"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+            </StackPanel>
+            <UniformGrid Margin="0,0,0,10" VerticalAlignment="Bottom" 
+                         HorizontalAlignment="Center" Columns="3">
+                <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Add" Visibility="{Binding AddButtonVisibility}" Command="{Binding AddSessionCommand}"></Button>
+                <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0"  Content="Change" Visibility="{Binding ChangeButtonVisibility}" Command="{Binding ChangeSessionCommand}"/>
+                <Button Width="70" Height="30" Style="{StaticResource ListViewButtonStyle}" FontSize="16" FontWeight="Bold" Margin="12,0" Content="Cancel" Command="{Binding ShowAdminSessionsCommand}"/>
+            </UniformGrid>
+        </Grid>
     </Grid>
 </UserControl>
 

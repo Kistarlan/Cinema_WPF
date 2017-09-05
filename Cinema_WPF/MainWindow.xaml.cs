@@ -124,7 +124,8 @@ namespace Cinema_WPF
             MainViewViewModel.Show();
             MainView.Visibility = Visibility.Visible;
             LoginView.Visibility = Visibility.Hidden;
-            this.MinWidth = 500;
+            this.MinWidth = 600;
+            this.MinHeight = 600;
             this.Width = 600;
             this.Height = 600;
             this.ResizeMode = ResizeMode.CanResize;

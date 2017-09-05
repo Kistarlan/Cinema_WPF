@@ -24,5 +24,12 @@ namespace Cinema_WPF.Models
             Genres = new List<Genre>();
             Sessions = new List<Session>();
         }
+
+        public void ClearList()
+        {
+            Directors.Clear();
+            Genres.Clear();
+            Sessions.Clear();
+        }
     }
 }

@@ -58,6 +58,170 @@ namespace Cinema_WPF.Helper
             }
         }
 
+        public static ObservableCollection<Director> AddDirector(ObservableCollection<Director> directors, Director director)
+        {
+            ObservableCollection<Director> rezult = new ObservableCollection<Director>();
+            if (directors == null)
+            {
+                rezult.Add(director);
+                return rezult;
+            }
+            else
+            {
+                List<Director> Directors = directors.ToList();
+                int count = Directors.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    rezult.Add(Directors[i]);
+                }
+                rezult.Add(director);
+                return rezult;
+            }
+        }
+
+        public static ObservableCollection<Genre> AddGenre(ObservableCollection<Genre> genres, Genre genre)
+        {
+            ObservableCollection<Genre> rezult = new ObservableCollection<Genre>();
+            if (genres == null)
+            {
+                rezult.Add(genre);
+                return rezult;
+            }
+            else
+            {
+                List<Genre> Genres = genres.ToList();
+                int count = Genres.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    rezult.Add(Genres[i]);
+                }
+                rezult.Add(genre);
+                return rezult;
+            }
+        }
+
+        public static ObservableCollection<Genre> RemoveGenre(ObservableCollection<Genre> genres, Genre genre)
+        {
+            ObservableCollection<Genre> rezult = new ObservableCollection<Genre>();
+            List<Genre> Genres = genres.ToList();
+            int count = Genres.Count();
+            for (int i = 0; i < count; i++)
+            {
+                if (Genres[i].Id != genre.Id)
+                    rezult.Add(Genres[i]);
+            }
+            return rezult;
+        }
+
+        public static ObservableCollection<Film> AddFilm(ObservableCollection<Film> films, Film film)
+        {
+            ObservableCollection<Film> rezult = new ObservableCollection<Film>();
+            if (films == null)
+            {
+                rezult.Add(film);
+                return rezult;
+            }
+            else
+            {
+                List<Film> Films = films.ToList();
+                int count = films.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    rezult.Add(Films[i]);
+                }
+                rezult.Add(film);
+                return rezult;
+            }
+        }
+
+        public static ObservableCollection<Film> RemoveFilm(ObservableCollection<Film> films, Film film)
+        {
+            ObservableCollection<Film> rezult = new ObservableCollection<Film>();
+            List<Film> Films = films.ToList();
+            int count = Films.Count();
+            for (int i = 0; i < count; i++)
+            {
+                if (Films[i].Id != film.Id)
+                    rezult.Add(Films[i]);
+            }
+            return rezult;
+        }
+
+        public static ObservableCollection<Director> RemoveDirector(ObservableCollection<Director> directors, Director director)
+        {
+            ObservableCollection<Director> rezult = new ObservableCollection<Director>();
+            List<Director> Directors = directors.ToList();
+            int count = Directors.Count();
+            for (int i = 0; i < count; i++)
+            {
+                if(Directors[i].Id != director.Id)
+                    rezult.Add(Directors[i]);
+            }
+            //rezult.Add(director);
+            return rezult;
+
+        }
+
+        public static void GetDirectorsforFilmChanging(ObservableCollection<Director> directors, Film film, ObservableCollection<Director> CurrentDirectors, ObservableCollection<Director> Directors)
+        {
+            List<Director> DirectorList = directors.ToList();
+            var FilmDirectorList = film.Directors.ToList();
+            int count = DirectorList.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+
+                if (FilmDirectorList.Find(s => s.Id == DirectorList[i].Id) != null)
+                {
+                    CurrentDirectors.Add(DirectorList[i]);
+                }
+                else
+                {
+                    Directors.Add(DirectorList[i]);
+                }
+            }
+        }
+
+        public static void GetGenresforFilmChanging(ObservableCollection<Genre> genres, Film film, ObservableCollection<Genre> CurrentGenres, ObservableCollection<Genre> Genres)
+        {
+            var GenreList = genres.ToList();
+            var FilmDirectorList = film.Genres.ToList();
+            int count = GenreList.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+
+                if (FilmDirectorList.Find(s => s.Id == GenreList[i].Id) != null)
+                {
+                    CurrentGenres.Add(GenreList[i]);
+                }
+                else
+                {
+                    Genres.Add(GenreList[i]);
+                }
+            }
+        }
+
+        public static void GetFilmsFromDirector(ObservableCollection<Film> films, Director director, ObservableCollection<Film> CurrentFilms, ObservableCollection<Film> Films)
+        {
+            var FilmList = films.ToList();
+            var DirectorFilmList = director.Films.ToList();
+            int count = FilmList.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+
+                if (DirectorFilmList.Find(s => s.Id == FilmList[i].Id) != null)
+                {
+                    CurrentFilms.Add(FilmList[i]);
+                }
+                else
+                {
+                    Films.Add(FilmList[i]);
+                }
+            }
+        }
+
         public static ObservableCollection<Session> Get_Sessions(List<Session> sessions, int start, int size)
         {
 
