@@ -28,17 +28,17 @@ namespace Cinema_WPF.ViewModels
         public void Login(User user)
         {
             CurentWindow.ShowMainView(user);
-            //LoginViewVisibility = Visibility.Hidden;
-            //MainViewVisibility = Visibility.Visible;
-            //VisibilityPropertyChanged();
+            LoginViewVisibility = Visibility.Hidden;
+            MainViewVisibility = Visibility.Visible;
+            VisibilityPropertyChanged();
         }
 
         public void Logout()
         {
             CurentWindow.ShowLoginView();
-            //LoginViewVisibility = Visibility.Visible;
-            //MainViewVisibility = Visibility.Hidden;
-            //VisibilityPropertyChanged();
+            LoginViewVisibility = Visibility.Visible;
+            MainViewVisibility = Visibility.Hidden;
+            VisibilityPropertyChanged();
         }
 
         private void VisibilityPropertyChanged()
@@ -49,5 +49,9 @@ namespace Cinema_WPF.ViewModels
             //RaisePropertyChanged("Height");
         }
 
+        public void Close()
+        {
+            CurentWindow.closeAll();
+        }
     }
 }

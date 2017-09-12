@@ -20,16 +20,21 @@ namespace Cinema_WPF.Views
     /// <summary>
     /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class LoginView
     {
         public LoginView()
         {
             InitializeComponent();
         }
 
-        private void TextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void LoginView_OnClosed(object sender, EventArgs e)
         {
+            (this.DataContext as LoginViewModel).Close();
+        }
 
+        public void Close()
+        {
+            Application.Current.Shutdown(0);
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -37,5 +42,6 @@ namespace Cinema_WPF.Views
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+
     }
 }

@@ -363,6 +363,11 @@ namespace Cinema_WPF.ViewModels
             ParentMainWindowViewModel.Logout();
         }
 
+        public void Close()
+        {
+            ParentMainWindowViewModel.Close();
+        }
+
         public void Show()
         {
             RaisePropertyChanged("User");

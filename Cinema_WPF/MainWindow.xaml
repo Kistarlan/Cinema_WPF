@@ -20,8 +20,8 @@
         <viewModel:MainWindowViewModel></viewModel:MainWindowViewModel>
     </Window.DataContext>-->
     <Grid Background="#41b1e1">
-        <views:MainView x:Name="MainView" Visibility="{Binding MainViewVisibility}"></views:MainView>
-        <views:LoginView x:Name="LoginView" Visibility="{Binding LoginViewVisibility}"></views:LoginView>
+        <!--<views:MainView x:Name="MainView" Visibility="{Binding MainViewVisibility}"></views:MainView>-->
+        <!--<views:LoginView x:Name="LoginView" Visibility="{Binding LoginViewVisibility}"></views:LoginView>-->
     </Grid>
 </controls:MetroWindow>
 

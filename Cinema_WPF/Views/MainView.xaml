@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Cinema_WPF.Views.MainView"
+﻿<controls:MetroWindow x:Class="Cinema_WPF.Views.MainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,15 +6,18 @@
              xmlns:local="clr-namespace:Cinema_WPF.Views"
              xmlns:viewModel="clr-namespace:Cinema_WPF.ViewModels"
              xmlns:converters="clr-namespace:Cinema_WPF.Converters"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              FontFamily="Georgia"
-             d:DesignHeight="300" 
+             d:DesignHeight="300"
              d:DesignWidth="800"
+             WindowState="Maximized"
+             Closed="MainView_OnClosed"
              >
-    <UserControl.DataContext>
+    <controls:MetroWindow.DataContext>
         <viewModel:MainViewViewModel></viewModel:MainViewViewModel>
-    </UserControl.DataContext>
-    <UserControl.Resources>
+    </controls:MetroWindow.DataContext>
+    <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles/ButtonStyle.xaml"/>
@@ -24,7 +27,7 @@
             <converters:WidthConverter x:Key="WidthConverter"></converters:WidthConverter>
             <converters:ButtonVisibilityConverter x:Key="ButtonVisibilityConverter"></converters:ButtonVisibilityConverter>
         </ResourceDictionary>
-    </UserControl.Resources>
+    </controls:MetroWindow.Resources>
     <Grid Background="#41b1e1" >
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -500,4 +503,4 @@
         </Grid>
     </Grid>
     
-</UserControl>
+</controls:MetroWindow>

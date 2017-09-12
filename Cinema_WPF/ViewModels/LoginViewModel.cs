@@ -81,6 +81,11 @@ namespace Cinema_WPF.ViewModels
             }
         }
 
+        public void Close()
+        {
+            ParentMainWindowViewModel.Close();
+        }
+
         private void CleanAll()
         {
             UserName = null;

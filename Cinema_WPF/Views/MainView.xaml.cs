@@ -21,7 +21,7 @@ namespace Cinema_WPF.Views
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class MainView : UserControl
+    public partial class MainView
     {
         public MainView()
         {
@@ -64,6 +64,16 @@ namespace Cinema_WPF.Views
                 else
                     (this.DataContext as MainViewViewModel).RemoveTicketFromCart(ticket);
             }
+        }
+
+        private void MainView_OnClosed(object sender, EventArgs e)
+        {
+            (this.DataContext as MainViewViewModel).Close();
+        }
+
+        public void Close()
+        {
+            Application.Current.Shutdown(0);
         }
     }
 }
