@@ -99,6 +99,20 @@ namespace Cinema_WPF
             //    Price = 50
             //});
 
+            if (dbContext.UserRoles.First() == null)
+            {
+                UserRole AdminRole = new UserRole() { Name = "Admin" };
+                UserRole CashierRole = new UserRole() { Name = "Cashier" };
+                dbContext.UserRoles.Add(AdminRole);
+                dbContext.UserRoles.Add(CashierRole);
+                dbContext.SaveChanges();
+
+                User AdminUser = new User() { Login = "Admin", Name = "Admin", Surname = "Admin", Password = "Admin", UserRole = dbContext.UserRoles.First(), UserRoleId = 0, DateOfBirth = Convert.ToDateTime(new DateTime(1997, 3, 12)).Date };
+                dbContext.Users.Add(AdminUser);
+
+                dbContext.SaveChanges();
+            }
+
             dbContext.SaveChanges();
 
             loginView = new LoginView();
