@@ -17,15 +17,15 @@ namespace Cinema_WPF.Migrations
         protected override void Seed(Cinema_WPF.Context.CinemaContext context)
         {
 
-            var AdminRole = new UserRole() { Name = "Admin" };
-            context.UserRoles.Add(AdminRole);
-            context.SaveChanges();
-            var CashierRole = new UserRole() { Name = "Cashier" };
+            //var AdminRole = new UserRole() { Name = "Admin" };
+            //context.UserRoles.Add(AdminRole);
+            //context.SaveChanges();
+            //var CashierRole = new UserRole() { Name = "Cashier" };
 
-            context.UserRoles.Add(CashierRole);
+            //context.UserRoles.Add(CashierRole);
 
-            context.SaveChanges();
-            User AdminUser = new User() { Login = "Admin", Name = "Admin", Surname = "Admin", Password = "Admin", UserRole = context.UserRoles.Find(AdminRole), UserRoleId = 0, DateOfBirth = Convert.ToDateTime(new DateTime(1997, 3, 12)).Date };
+            //context.SaveChanges();
+            //User AdminUser = new User() { Login = "Admin", Name = "Admin", Surname = "Admin", Password = "Admin", UserRole = context.UserRoles.Find(AdminRole), UserRoleId = 0, DateOfBirth = Convert.ToDateTime(new DateTime(1997, 3, 12)).Date };
 
             //UserRole AdminRole = new UserRole() { Name = "Admin" };
             //UserRole CashierRole = new UserRole() { Name = "Cashier" };
